@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="./assets/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+    {% assets "css_bootstrap" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+    {% assets "css_main" %}
+    <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+    {% endassets %}
+    {% block styles %}
+
+    {% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+
+    {% endblock %}
+</head>
+
+<!-- Your page content -->
+{% block content %}{% endblock %}
+
+
+<!-- Footer -->
+{% block footer %}{% endblock %}
+
+
+
+{% assets "js_bootstrap" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% block scripts %}
+<!-- Scripts -->
+
+{% endblock %}
+
+</body>
+</html>
