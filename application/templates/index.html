@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% assets "css_bootstrap" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% assets "css_main" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% assets "css_index" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<body class="text-center">
+{% include 'nav.html' %}
+<div class="banner d-flex flex-column">
+    <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
+         style="background-image: url({{ url_for('static', filename='img/pic01.jpg') }});">
+        <article class="container">
+            <div class="article-content row text-with-border justify-content-center">
+                <h1 class="display-4 my-3">
+                    IPSUM CONSEQUAT LOREM
+                </h1>
+                <p class="col-6 my-3">
+                    Lorem feugiat veroeros dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem
+                    ipsum dolor sit amet consequat tempus adipiscing.
+                </p>
+            </div>
+            <div class="row justify-content-center my-3">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="btn btn-outline-light">Full Story</a>
+
+                    </li>
+                </ul>
+            </div>
+        </article>
+    </div>
+    <div class="secondary-article-container mb-5">
+        <article class="d-flex flex-column justify-content-center container-fluid"
+                 style="background-image: url({{ url_for('static', filename='img/pic02.jpg') }});">
+            <div class="article-content row justify-content-center text-with-border">
+                <h1 class="display-6 my-2">
+                    ALIQUAM VEROEROS
+                </h1>
+                <p class="col-6 my-2 ">
+                    Dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem ipsum dolor sit amet
+                    consequat
+                </p>
+            </div>
+            <div class="row justify-content-center my-2">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="btn btn-outline-light">Full Story</a>
+                    </li>
+                </ul>
+            </div>
+        </article>
+        <article class="d-flex flex-column justify-content-center container-fluid"
+                 style="background-image: url({{ url_for('static', filename='img/pic03.jpg') }});">
+            <div class="article-content row justify-content-center text-with-border">
+                <h1 class="display-6 my-2">
+                    TEMPUS SED MAGNA
+                </h1>
+                <p class="col-6 my-2 ">
+                    Dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem ipsum dolor sit amet
+                    consequat
+                </p>
+            </div>
+            <div class="row justify-content-center my-2">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#" class="btn btn-outline-light">Full Story</a>
+                    </li>
+                </ul>
+            </div>
+        </article>
+    </div>
+</div>
+
+<div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
+    <article class="container">
+        <div class="article-content row text-with-border justify-content-center">
+            <h1 class="display-4  p-3">
+                IPSUM CONSEQUAT LOREM
+            </h1>
+            <p class="col-6 p-3">
+                Lorem feugiat veroeros dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem
+                ipsum dolor sit amet consequat tempus adipiscing.
+            </p>
+        </div>
+        <div class="featured-article-image m-5"
+             style="background-image: url({{ url_for('static', filename='img/pic04.jpg') }});">
+        </div>
+        <div class="row justify-content-center my-3">
+            <ul class="list-unstyled">
+                <li>
+                    <a href="#" class="btn btn-outline-light">Full Story</a>
+                </li>
+            </ul>
+        </div>
+    </article>
+</div>
+<div class="post-container text-quaternary-color mt-5 pt-5">
+    <div class="post align-items-start">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic05.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+    <div class="post">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic06.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+    <div class="post">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic07.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+    <div class="post">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic08.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+    <div class="post">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic09.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+    <div class="post">
+        <div class="post-image"
+             style="background-image: url({{ url_for('static', filename='img/pic10.jpg') }});">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+        </div>
+    </div>
+
+</div>
+<div class="container my-3 p-3 d-flex justify-content-center">
+    <div class="pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="footer container d-flex justify-content-center py-3">
+    <footer>
+        Footer
+    </footer>
+</div>
+
+{% endblock %}
