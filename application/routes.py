@@ -6,7 +6,7 @@ from flask import current_app as app
 from .models import db, User, BlogPost, Comment
 from . import login_manager
 from flask_login import current_user, login_required, logout_user
-from .forms import RegisterForm, LoginForm, CommentForm, ContactForm
+from .forms import RegisterForm, LoginForm, CommentForm, ContactForm, CreatePostForm
 from .assets import compile_static_assets
 
 from functools import wraps
@@ -28,15 +28,19 @@ def index():
 
 
 # generic page
-@main_bp.route('/generic')
-def generic():
-	return render_template("generic.html")
+@main_bp.route('/post')
+def post():
+	return render_template("post.html")
 
 
 # example of elements with scss styling to add to other pages as needed
-@main_bp.route('/elements')
-def elements():
-	return render_template("elements.html")
+@main_bp.route('/create_post')
+def create_post():
+	form = CreatePostForm()
+	return render_template(
+		"create_post.html",
+		form=form,
+	)
 
 
 @main_bp.route("/contact", methods=["GET", "POST"])

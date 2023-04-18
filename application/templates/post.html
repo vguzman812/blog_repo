@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% assets "css_bootstrap" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% assets "css_main" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% assets "css_post" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+<body>
+{% include 'nav.html' %}
+
+<div class="">
+    <section>
+        <article class="container">
+            <header class="row text-center m-3">
+                <h2 class="display-7">
+                    Maecenas sed diam quis diam fermentum gravida.
+                </h2>
+                <span>
+                Nunc malesuada sem viverra, elementum justo sit amet, aliquam justo. Ut et arcu vel neque.
+                </span>
+            </header>
+            <div class="row justify-content-center mb-3 pb-5">
+                <img class="col-9" src="{{ url_for('static', filename='img/pic09.jpg') }}" alt="">
+            </div>
+            <div class="content container text-start text-quaternary-color">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna aliqua. Egestas maecenas pharetra convallis posuere morbi leo. Morbi tristique senectus
+                    et
+                    netus et malesuada fames ac. Duis ut diam quam nulla porttitor massa. Donec massa sapien faucibus et
+                    molestie ac feugiat. A diam sollicitudin tempor id eu nisl nunc mi ipsum. Orci dapibus ultrices in
+                    iaculis nunc sed augue lacus viverra. Magna fermentum iaculis eu non diam phasellus vestibulum. At
+                    imperdiet dui accumsan sit amet nulla facilisi morbi tempus. Nec ullamcorper sit amet risus.
+                    Elementum
+                    nisi quis eleifend quam. Sed arcu non odio euismod lacinia at. Nunc id cursus metus aliquam eleifend
+                    mi
+                    in </p>
+                <h4>
+                    Cras a lorem porta, commodo lacus vitae, mollis leo
+                </h4>
+                <p>
+                    Sed ut erat ligula. Nunc ut auctor nunc, eget consequat magna. Nullam vehicula tellus quis odio
+                    dignissim facilisis. Aliquam nec mollis nulla, vitae imperdiet urna. Cras tincidunt nisl sit amet mi
+                    aliquam, eget faucibus felis convallis. Etiam consequat tempor leo. Nullam id elit mattis enim
+                    euismod
+                    accumsan eu vitae libero. Morbi sollicitudin quam felis, in euismod massa fringilla vitae.
+                    Suspendisse
+                    ipsum est, blandit vel orci eget, eleifend cursus mauris. Suspendisse elementum elit ut nisi
+                    scelerisque
+                    aliquam non ut metus. Nam pretium accumsan enim, a consectetur odio. </p>
+                <h4>
+                    Donec aliquam est nec bibendum blandit.
+                </h4>
+                <p>
+                    Praesent tristique eu libero sit amet ultricies. Curabitur luctus ullamcorper est, eu malesuada
+                    velit
+                    ultricies eget. Etiam venenatis nulla tristique feugiat volutpat. Donec quis dui maximus, auctor
+                    justo
+                    viverra, fermentum lacus. Maecenas accumsan lacus tortor, a dapibus felis finibus quis. Vestibulum
+                    ante
+                    ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In hac habitasse platea
+                    dictumst. Pellentesque id sapien ipsum. Sed porttitor, purus quis tincidunt ullamcorper, risus
+                    sapien
+                    egestas erat, sit amet tempus est neque et risus. Integer mi nisl, laoreet rutrum feugiat non,
+                    lobortis
+                    vel sem. Nunc ex felis, rutrum vitae justo et, rutrum sagittis elit. Cras iaculis ac est eget
+                    posuere.
+                    Vestibulum aliquam elit et ante commodo accumsan. Sed nisi arcu, commodo non dapibus quis,
+                    ullamcorper
+                    vel nibh. Duis hendrerit tempor tortor sit amet porttitor. </p>
+                <p>
+                    Phasellus dictum vitae tortor id porta. Praesent finibus commodo turpis eget ullamcorper. Duis nec
+                    aliquet augue. Morbi eu nibh tempus, tempor elit sed, imperdiet sapien. Mauris a ante nunc. Aliquam
+                    sollicitudin metus mauris, id suscipit leo placerat accumsan. Donec vehicula, odio in porttitor
+                    tincidunt, nunc mi volutpat felis, ac fringilla mi velit in nibh. Vestibulum molestie, dui vitae
+                    accumsan interdum, tellus justo tempor neque, sit amet maximus augue augue sit amet felis. Phasellus
+                    ultrices rutrum ante non eleifend. In posuere in diam vitae auctor.
+                </p></div>
+        </article>
+
+    </section>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
