@@ -16,7 +16,7 @@
 <body>
 {% include 'nav.html' %}
 
-{% from 'bootstrap5/form.html' import render_field, render_hidden_errors, render_form_row %}
+{% from 'bootstrap5/form.html' import render_field, render_hidden_errors %}
 <div class="wrapper d-flex flex-column container">
     <div class="container p-5 rounded dummy-text">
         <h1 class="text-center pb-3"> This is where the magic begins!</h1>
@@ -26,14 +26,6 @@
             dignissim
             nulla. Aenean fringilla odio vitae varius efficitur.
         </aside>
-    </div>
-
-    <div class="theme-switch-wrapper bg-light">
-        <label class="theme-switch" for="checkbox">
-            <input type="checkbox" id="checkbox"/>
-            <div class="slider round"></div>
-        </label>
-        <em>Enable Dark Mode!</em>
     </div>
 
 

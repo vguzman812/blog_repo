@@ -8,12 +8,9 @@ a {
 }
 
 h1 {
-    color: var(--tertiary-color);
+    color: var(--text-tertiary-color);
 }
 
-.wrapper {
-    height: 100vh;
-}
 
 .dummy-text {
     font-weight: 500;
@@ -23,7 +20,7 @@ h1 {
 
 
 .form-container {
-    background-color: var(--secondary-color);
+    background-color: var(--bg-secondary-color);
     max-width: 700px;
 }
 

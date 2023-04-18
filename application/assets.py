@@ -44,6 +44,11 @@ def compile_main_assets(assets):
 			filters=scss_filters,
 			output='dist/css/index.css',
 		),
+		'css_post': Bundle(
+			'src/scss/post.scss',
+			filters=scss_filters,
+			output='dist/css/post.css',
+		),
 		'js_bootstrap': Bundle(
 			'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
 			filters=js_filters,
@@ -58,6 +63,11 @@ def compile_main_assets(assets):
 			'src/js/register.js',
 			filters=js_filters,
 			output='dist/js/register.js'
+		),
+		'js_nav': Bundle(
+			'src/js/nav.js',
+			filters=js_filters,
+			output='dist/js/nav.js'
 		),
 	}
 
