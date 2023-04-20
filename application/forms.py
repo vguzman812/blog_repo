@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, HiddenField
 from wtforms.validators import DataRequired, URL, Email, EqualTo, Length
 from flask_ckeditor import CKEditorField
 
@@ -38,7 +38,6 @@ class RegisterForm(FlaskForm):
 		DataRequired(),
 		EqualTo('password', message="Passwords must match.")
 	])
-	recaptcha = RecaptchaField()
 	submit = SubmitField("Sign Me Up!")
 
 
@@ -50,11 +49,11 @@ class LoginForm(FlaskForm):
 	password = PasswordField("Password", validators=[
 		DataRequired(),
 	])
-	recaptcha = RecaptchaField()
 	submit = SubmitField("Let Me In!")
 
 
 class CommentForm(FlaskForm):
+	post_id = HiddenField()
 	comment_text = CKEditorField("Comment", validators=[
 		DataRequired(),
 	])
@@ -81,5 +80,4 @@ class ContactForm(FlaskForm):
 		DataRequired(),
 		Length(min=4, message='Your message is too short.'),
 	])
-	recaptcha = RecaptchaField()
 	submit = SubmitField('Submit')

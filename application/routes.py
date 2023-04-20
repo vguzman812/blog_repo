@@ -1,6 +1,6 @@
 """Route declaration."""
 
-from flask import render_template, url_for, redirect, Blueprint, session, flash
+from flask import render_template, url_for, redirect, Blueprint, session, flash, request
 from datetime import datetime as dt
 from flask import current_app as app
 from .models import db, User, BlogPost, Comment
@@ -23,23 +23,79 @@ main_bp = Blueprint(
 # home page
 @main_bp.route('/')
 def index():
-	# posts = BlogPost.query.all()
-	return render_template("index.html", current_user=current_user)
+	posts = BlogPost.query.all()
+	page = request.args.get('page', 1, type=int)
+	pagination = BlogPost.query.order_by(BlogPost.created_on.desc()).paginate(page=page, per_page=6)
+
+	return render_template(
+		"index.html",
+		current_user=current_user,
+		pagination=pagination,
+		all_posts=posts,
+	)
 
 
-# generic page
-@main_bp.route('/post')
-def post():
-	return render_template("post.html")
+@main_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
+def post(post_id):
+	"""
+		Rendering page for requested post.
+
+		GET requests serve requested post.
+		POST requests validate and commits comment to post.
+	"""
+	form = CommentForm()
+	requested_post = BlogPost.query.get_or_404(post_id)
+
+	if form.validate_on_submit():
+		if not current_user.is_authenticated:
+			flash("You need to login to comment.")
+			return redirect(url_for("main_bp.post", post_id=post_id))
+
+		new_comment = Comment(
+			text=form.comment_text.data,
+			author_id=current_user.id,
+			post_id=form.post_id.data,
+			created_on=dt.today(),
+		)
+		db.session.add(new_comment)
+		db.session.commit()
+		return redirect(url_for('main_bp.post', post_id=post_id))
+
+	return render_template(
+		"post.html",
+		post=requested_post,
+		form=form,
+		current_user=current_user,
+	)
 
 
-# example of elements with scss styling to add to other pages as needed
-@main_bp.route('/create_post')
+@main_bp.route('/create_post', methods=["GET", "POST"])
+@login_required
 def create_post():
+	"""
+		Page for creating posts for registered users
+
+		GET requests serve creation form.
+		POST requests validate and commits new post to database.
+	"""
 	form = CreatePostForm()
+	if form.validate_on_submit():
+		new_post = BlogPost(
+			title=form.title.data,
+			subtitle=form.subtitle.data,
+			body=form.body.data,
+			img_url=form.img_url.data,
+			author=current_user,
+			author_id=current_user.id,
+			created_on=dt.today()
+		)
+		db.session.add(new_post)
+		db.session.commit()
+		return redirect(url_for("main_bp.post", post_id=new_post.id))
 	return render_template(
 		"create_post.html",
 		form=form,
+		current_user=current_user,
 	)
 
 
@@ -62,27 +118,6 @@ def logout():
 	logout_user()
 	return redirect(url_for('main_bp.index'))
 
-
-@main_bp.route("/post/<int:post_id>", methods=["GET", "POST"])
-def show_post(post_id):
-	form = CommentForm()
-	requested_post = BlogPost.query.get(post_id)
-
-	if form.validate_on_submit():
-		if not current_user.is_authenticated:
-			flash("You need to login or register to comment.")
-			return redirect(url_for("auth_bp.login"))
-
-		new_comment = Comment(
-			text=form.comment_text.data,
-			comment_author=current_user,
-			parent_post=requested_post
-		)
-		db.session.add(new_comment)
-		db.session.commit()
-
-	# TODO: Change this in the future to post.html
-	return render_template("generic.html", post=requested_post, form=form, current_user=current_user)
 
 
 # route for photo uploads for the post. TODO: Fix this to use in post creation:

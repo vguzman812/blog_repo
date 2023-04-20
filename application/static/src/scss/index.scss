@@ -2,6 +2,17 @@
 //     outline: 1px solid red;
 }
 
+a {
+    color: text-quaternary-color !important;
+}
+h5 {
+    font-weight: 700;
+}
+h1 {
+    font-size: 1.5rem;
+        font-weight: 700;
+
+}
 .article-container {
 
 }
@@ -52,7 +63,7 @@
 }
 
 .post {
-    height: 70vh;
+    min-height: 70vh;
 }
 
 .post-image {

@@ -67,7 +67,7 @@ def register():
 			db.session.add(user)
 			db.session.commit()  # Create new user
 			login_user(user)  # Log in as newly created user
-			return redirect(url_for('user_interface_bp.dashboard'))
+			return redirect(url_for('auth_bp.dashboard'))
 	return render_template(
 		'register.html',
 		form=form,
@@ -84,7 +84,7 @@ def login():
 	"""
 	# Bypass if user is logged in
 	if current_user.is_authenticated:
-		return redirect(url_for('user_interface_bp.dashboard'))
+		return redirect(url_for('auth_bp.dashboard'))
 
 	form = LoginForm()
 	# Validate login attempt
@@ -95,10 +95,17 @@ def login():
 			login_user(user)
 			user.last_login = datetime.now()
 			next_page = request.args.get('next')
-			return redirect(next_page or url_for('user_interface_bp.dashboard'))
+			return redirect(next_page or url_for('auth_bp.dashboard'))
 		flash('Invalid email/password combination')
 		return redirect(url_for('auth_bp.login'))
 	return render_template(
 		'login.html',
 		form=form,
+	)
+
+@auth_bp.route('/dashboard', methods=['GET'])
+def dashboard():
+	"""Logged in user dashboard."""
+	return render_template(
+		'dashboard.html',
 	)

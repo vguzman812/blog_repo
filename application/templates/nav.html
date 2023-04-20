@@ -1,8 +1,8 @@
 <!-- Nav -->
-<nav class="patterned navbar navbar-default navbar-expand-xl sticky-top navbar-dark">
+<nav class="patterned navbar navbar-default navbar-expand-xl sticky-top navbar-light">
     <div class="container">
         <a class="navbar-brand" href="{{url_for('main_bp.index')}}"><strong>IdeaGenie</strong>
-            <span>By Vincent</span></a>
+            <span></span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -29,9 +29,6 @@
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('main_bp.post')}}">Generic Post</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{{url_for('main_bp.create_post')}}">Create Post</a>
                 </li>
                 <li class="nav-item dropdown">
@@ -39,7 +36,7 @@
                        aria-expanded="false">
                         Color Theme
                     </a>
-                    <ul class="dropdown-menu patterned text-center dropdown-menu-dark">
+                    <ul class="dropdown-menu patterned text-center">
                         <li class="d-flex align-items-center justify-content-center">
                             <a class="dropdown-item light-theme-toggler" href="#">Light</a>
                         </li>
