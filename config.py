@@ -37,7 +37,7 @@ class ProdConfig(Config):
 class DevConfig(Config):
     FLASK_ENV = 'development'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = environ.get('DEV_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = environ.get('DEV_DATABASE_URI_1')
 
     # Flask-Assets
     ASSETS_DEBUG = True

@@ -1,9 +1,8 @@
 // Check if user has previously chosen a theme
 let theme = localStorage.getItem('theme');
-let links = document.querySelectorAll('.light-theme-toggler, .dark-theme-toggler');
-let btns = document.querySelectorAll('.btn-outline-light, .btn-outline-dark');
-let navs = document.querySelectorAll('.navbar-dark, .navbar-light');
-let dropdowns = document.querySelectorAll('.dropdown-menu-dark, .dropdown-menu-light');
+let themeTogglers = document.querySelectorAll('.light-theme-toggler, .dark-theme-toggler');
+let navs = document.querySelectorAll('.navbar');
+let dropdowns = document.querySelectorAll('.dropdown-menu');
 
 
 
@@ -14,8 +13,31 @@ if(theme === null) {
   localStorage.setItem('theme', theme);
 }
 
+// Set the theme on page load
+document.documentElement.setAttribute('data-theme', theme);
+
 // Set initial theme
 document.documentElement.setAttribute('data-theme', theme);
+if(theme ==='light') {
+    // Add navbar settings
+    navs.forEach(nav => {
+        nav.classList.add("navbar-light");
+    });
+    dropdowns.forEach(dropdown => {
+      dropdown.classList.add("dropdown-menu-light");
+      dropdown.classList.remove("dropdown-menu-dark")
+    });
+}
+if(theme ==='dark') {
+    // Add navbar settings
+    navs.forEach(nav => {
+        nav.classList.add("navbar-dark");
+    });
+    dropdowns.forEach(dropdown => {
+      dropdown.classList.add("dropdown-menu-dark");
+      dropdown.classList.remove("dropdown-menu-light")
+    });
+}
 
 // Toggle theme function
 function toggleTheme() {
@@ -28,21 +50,12 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', theme);
 
   // Disable the link with the current theme
-  links.forEach(link => {
+  themeTogglers.forEach(link => {
     if (link.innerText.toLowerCase() === theme) {
       link.classList.add("disabled", "text-decoration-line-through");
     } else {
       link.classList.remove("disabled", "text-decoration-line-through");
     }
-  });
-  //  Toggle btn themes
-  btns.forEach(btn => {
-    if (btn.classList.contains("btn-outline-light")) {
-      btn.classList.add("btn-outline-dark");
-      btn.classList.remove("btn-outline-light")
-    } else {
-      btn.classList.add("btn-outline-light");
-      btn.classList.remove("btn-outline-dark")    }
   });
   navs.forEach(nav => {
     if (nav.classList.contains("navbar-dark")) {
@@ -63,7 +76,7 @@ function toggleTheme() {
   });
 }
 
-// Add event listeners to theme toggler links
+// Add event listeners to theme toggler themeTogglers
 document.querySelectorAll('.light-theme-toggler, .dark-theme-toggler').forEach(link => {
   link.addEventListener('click', toggleTheme);
 });
@@ -71,6 +84,7 @@ document.querySelectorAll('.light-theme-toggler, .dark-theme-toggler').forEach(l
 // Disable the link with the current theme on page load
 document.querySelectorAll('.light-theme-toggler, .dark-theme-toggler').forEach(link => {
   if (link.innerText.toLowerCase() === theme) {
-    link.classList.add("disabled");
+    link.classList.add("disabled", "text-decoration-line-through");
   }
 });
+

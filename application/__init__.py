@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
-from flask_assets import Environment, Bundle
+from flask_assets import Environment
 import openai
 from os import environ, path
 from dotenv import load_dotenv
@@ -32,6 +32,7 @@ def init_app():
 	login_manager.init_app(app)
 	ckeditor.init_app(app)
 	assets = Environment(app)
+
 
 	with app.app_context():
 		# Include our Routes

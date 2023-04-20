@@ -1,6 +1,6 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -13,33 +13,20 @@ class User(UserMixin, db.Model):
 	)
 	email = db.Column(
 		db.String(100),
-		index=False,
 		unique=True,
-		nullable=False,
 	)
 	password = db.Column(
-		db.String(200),
-		index=False,
-		unique=False,
-		nullable=False,
+		db.String(500),
 	)
 	username = db.Column(
-		db.String(100),
-		index=False,
+		db.String(50),
 		unique=True,
-		nullable=False,
 	)
 	created_on = db.Column(
 		db.DateTime,
-		index=False,
-		unique=False,
-		nullable=False,
 	)
 	last_login = db.Column(
 		db.DateTime,
-		index=False,
-		unique=False,
-		nullable=True,
 	)
 	posts = relationship(
 		"BlogPost",
@@ -82,33 +69,23 @@ class BlogPost(db.Model):
 		back_populates="posts",
 	)
 	title = db.Column(
-		db.String(250),
-		index=False,
-		unique=False,
+		db.String(100),
+		unique=True,
 		nullable=False,
 	)
 	subtitle = db.Column(
-		db.String(250),
-		index=False,
-		unique=False,
+		db.String(100),
 		nullable=True,
 	)
 	created_on = db.Column(
 		db.DateTime,
-		index=False,
-		unique=False,
-		nullable=False,
 	)
 	body = db.Column(
 		db.Text,
-		index=False,
-		unique=False,
 		nullable=False,
 	)
 	img_url = db.Column(
 		db.String(250),
-		index=False,
-		unique=False,
 		nullable=True,
 	)
 	comments = relationship(
@@ -130,16 +107,11 @@ class Comment(db.Model):
 	post_id = db.Column(
 		db.Integer,
 		db.ForeignKey("blog_posts.id"),
-		index=False,
-		unique=True,
-		nullable=False,
+		unique=False,
 	)
 	author_id = db.Column(
 		db.Integer,
 		db.ForeignKey("users.id"),
-		index=False,
-		unique=False,
-		nullable=False,
 	)
 	parent_post = relationship(
 		"BlogPost",
@@ -151,8 +123,6 @@ class Comment(db.Model):
 	)
 	text = db.Column(
 		db.Text,
-		index=False,
-		unique=False,
 		nullable=False,
 	)
 	created_on = db.Column(

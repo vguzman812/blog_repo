@@ -3,18 +3,18 @@
 }
 :root {
 	/* Define light theme variables */
-	--primary-color: #F9F7F7;
-	--primary-color-transparent: #F9F7F77F;
-	--secondary-color: #DBE2EF;
-	--tertiary-color: #3F72AF;
+	--primary-color: #FCF8EC;
+	--primary-color-transparent: #FCF8EC7F;
+	--secondary-color: #D0E8F2;
+	--tertiary-color: #79A3B1;
 	--quaternary-color: #112D4E;
 
 	/* Define dark theme variables */
-	--dark-primary-color: #1B262C;
-	--dark-primary-color-transparent: #1B262C7F;
-	--dark-secondary-color: #0F4C75;
-	--dark-tertiary-color: #3282B8;
-	--dark-quaternary-color: #BBE1FA;
+	--dark-primary-color: #2C3333;
+	--dark-primary-color-transparent: #2C33337F;
+	--dark-secondary-color: #2E4F4F;
+	--dark-tertiary-color: #0E8388;
+	--dark-quaternary-color: #ECFCF6;
 }
 
 /* Define light theme styles */

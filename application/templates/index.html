@@ -17,21 +17,23 @@
 {% include 'nav.html' %}
 <div class="banner d-flex flex-column">
     <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
-         style="background-image: url({{ url_for('static', filename='img/pic01.jpg') }});">
+         style="background-image: url({{ all_posts[0].img_url }});">
         <article class="container">
             <div class="article-content row text-with-border justify-content-center">
-                <h1 class="display-4 my-3">
-                    IPSUM CONSEQUAT LOREM
-                </h1>
+                <a href="{{ url_for('main_bp.post', post_id=all_posts[0].id) }}" class="text-decoration-none text-quaternary-color">
+                    <h1 class="my-3">
+                        {{all_posts[0].title}}
+                    </h1>
+                </a>
                 <p class="col-6 my-3">
-                    Lorem feugiat veroeros dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem
-                    ipsum dolor sit amet consequat tempus adipiscing.
+                    {{all_posts[0].subtitle}}
                 </p>
             </div>
             <div class="row justify-content-center my-3">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#" class="btn btn-outline-light">Full Story</a>
+                        <a href="{{ url_for('main_bp.post', post_id=all_posts[0].id) }}" class="btn btn-outline-light">Full
+                            Story</a>
 
                     </li>
                 </ul>
@@ -40,39 +42,43 @@
     </div>
     <div class="secondary-article-container mb-5">
         <article class="d-flex flex-column justify-content-center container-fluid"
-                 style="background-image: url({{ url_for('static', filename='img/pic02.jpg') }});">
+                 style="background-image: url({{ all_posts[1].img_url }});">
             <div class="article-content row justify-content-center text-with-border">
-                <h1 class="display-6 my-2">
-                    ALIQUAM VEROEROS
-                </h1>
+                <a href="{{ url_for('main_bp.post', post_id=all_posts[1].id) }}" class="text-decoration-none text-quaternary-color">
+                    <h1 class="my-2">
+                        {{all_posts[1].title}}
+                    </h1>
+                </a>
                 <p class="col-6 my-2 ">
-                    Dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem ipsum dolor sit amet
-                    consequat
+                    {{all_posts[1].subtitle}}
                 </p>
             </div>
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#" class="btn btn-outline-light">Full Story</a>
+                        <a href="{{ url_for('main_bp.post', post_id=all_posts[1].id) }}" class="btn btn-outline-light">Full
+                            Story</a>
                     </li>
                 </ul>
             </div>
         </article>
         <article class="d-flex flex-column justify-content-center container-fluid"
-                 style="background-image: url({{ url_for('static', filename='img/pic03.jpg') }});">
+                 style="background-image: url({{ all_posts[2].img_url  }});">
             <div class="article-content row justify-content-center text-with-border">
-                <h1 class="display-6 my-2">
-                    TEMPUS SED MAGNA
-                </h1>
+                <a href="{{ url_for('main_bp.post', post_id=all_posts[2].id) }}" class="text-decoration-none text-quaternary-color">
+                    <h1 class="my-2">
+                        {{all_posts[2].title}}
+                    </h1>
+                </a>
                 <p class="col-6 my-2 ">
-                    Dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem ipsum dolor sit amet
-                    consequat
+                    {{all_posts[2].subtitle}}
                 </p>
             </div>
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#" class="btn btn-outline-light">Full Story</a>
+                        <a href="{{ url_for('main_bp.post', post_id=all_posts[2].id) }}" class="btn btn-outline-light">Full
+                            Story</a>
                     </li>
                 </ul>
             </div>
@@ -83,115 +89,79 @@
 <div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
     <article class="container">
         <div class="article-content row text-with-border justify-content-center">
-            <h1 class="display-4  p-3">
-                IPSUM CONSEQUAT LOREM
-            </h1>
-            <p class="col-6 p-3">
-                Lorem feugiat veroeros dolor sit amet tempus adipiscing amet sed aliquam feugiat veroeros lorem
-                ipsum dolor sit amet consequat tempus adipiscing.
+            <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" class="text-decoration-none text-quaternary-color">
+                <h1 class="p-3">
+                    {{all_posts[3].title}}
+                </h1>
+            </a>
+            <p class="col-6">
+                {{all_posts[3].subtitle}}
             </p>
         </div>
-        <div class="featured-article-image m-5"
-             style="background-image: url({{ url_for('static', filename='img/pic04.jpg') }});">
-        </div>
+        <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" >
+            <div class="featured-article-image m-5"
+                 style="background-image: url({{ all_posts[3].img_url}});">
+            </div>
+        </a>
         <div class="row justify-content-center my-3">
             <ul class="list-unstyled">
                 <li>
-                    <a href="#" class="btn btn-outline-light">Full Story</a>
+                    <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" class="btn btn-secondary">Full Story</a>
                 </li>
             </ul>
         </div>
     </article>
 </div>
 <div class="post-container text-quaternary-color mt-5 pt-5">
-    <div class="post align-items-start">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic05.jpg') }});">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
-        </div>
-    </div>
+    {% for post in pagination.items %}
     <div class="post">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic06.jpg') }});">
-        </div>
+        <a href="{{ url_for('main_bp.post', post_id=post.id) }}">
+            <div class="post-image"
+                 style="background-image: url({{ post.img_url }});">
+            </div>
+        </a>
         <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text m-3">{{ post.subtitle }}</p>
+            <a href="{{ url_for('main_bp.post', post_id=post.id) }}" class="btn btn-secondary mt-3">Full Story</a>
         </div>
     </div>
-    <div class="post">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic07.jpg') }});">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
-        </div>
-    </div>
-    <div class="post">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic08.jpg') }});">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
-        </div>
-    </div>
-    <div class="post">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic09.jpg') }});">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
-        </div>
-    </div>
-    <div class="post">
-        <div class="post-image"
-             style="background-image: url({{ url_for('static', filename='img/pic10.jpg') }});">
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-            <a href="#" class="btn btn-outline-light">Go somewhere</a>
-        </div>
-    </div>
-
+    {% endfor %}
 </div>
 <div class="container my-3 p-3 d-flex justify-content-center">
-    <div class="pagination">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+    <nav aria-label="post-navigation">
+        <ul class="pagination">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class='page-link' href="{{ url_for('main_bp.index', page=pagination.prev_num) }}">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+            {% for number in pagination.iter_pages() %}
+            {% if pagination.page != number %}
+            <li class="page-item">
+                <a class='page-link'
+                   href="{{ url_for('main_bp.index', page=number) }}">
+                    {{ number }}
+                </a>
+            </li>
+            {% else %}
+            <li class='page-item active' aria-current="page">
+                <span class="page-link">{{ number }}</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class='page-link'
+                   href="{{ url_for('main_bp.index', page=pagination.next_num) }}">
+                    Next
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 <div class="footer container d-flex justify-content-center py-3">
     <footer>
