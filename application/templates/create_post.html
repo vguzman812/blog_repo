@@ -11,7 +11,8 @@
         <div class="col mx-auto">
             {{ ckeditor.load() }}
             {{ ckeditor.config(name='body') }}
-            <form method="POST" class="container text-center text-quaternary-color shadow rounded p-3 bg-secondary-color w-100">
+            <form method="POST"
+                  class="container text-center text-quaternary-color shadow rounded p-3 bg-secondary-color w-100">
                 {% for message in get_flashed_messages() %}
                 <div class="mb-3">
                     <p class="text-warning">{{ message }}</p>
@@ -47,6 +48,7 @@
 </div>
 
 {% include "footer.html" %}
+
 {% endblock %}
 
 

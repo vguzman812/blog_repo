@@ -25,7 +25,7 @@
                     <a class="nav-link" href="{{url_for('main_bp.logout')}}">Log Out</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('user_interface_bp.dashboard')}}">Dashboard</a>
+                    <a class="nav-link" href="{{url_for('auth_bp.dashboard', user_id=current_user.id)}}">Dashboard</a>
                 </li>
                 {% endif %}
                 <li class="nav-item">

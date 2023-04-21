@@ -37,13 +37,11 @@ def init_app():
 	with app.app_context():
 		# Include our Routes
 		from . import routes, auth
-		from .user_interface import user_interface_routes
 		from .assets import compile_static_assets
 
 		# Import blueprints
 		app.register_blueprint(routes.main_bp)
 		app.register_blueprint(auth.auth_bp)
-		app.register_blueprint(user_interface_routes.user_interface_bp)
 
 		# Compile static assets
 		compile_static_assets(assets)
