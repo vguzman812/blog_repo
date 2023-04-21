@@ -99,6 +99,47 @@ def create_post():
 	)
 
 
+@main_bp.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+	post = BlogPost.query.get(post_id)
+	form = CreatePostForm(
+		title=post.title,
+		subtitle=post.subtitle,
+		img_url=post.img_url,
+		body=post.body
+	)
+	if form.validate_on_submit():
+		post.title = form.title.data
+		post.subtitle = form.subtitle.data
+		post.img_url = form.img_url.data
+		post.body = form.body.data
+
+		db.session.commit()
+
+		return redirect(url_for("main_bp.post", post_id=post.id))
+
+	return render_template("create_post.html", form=form, current_user=current_user)
+
+
+@main_bp.route('/update-comment', methods=['POST'])
+def update_comment():
+	# Get the comment ID and new comment text from the request's JSON data
+	data = request.get_json()
+	comment_id = data.get('comment_id')
+	comment_text = data.get('comment_text')
+	print(post_id)
+
+	# Update the comment in your database or wherever you store your comments
+	comment = Comment.query.get(comment_id)
+	comment.text = comment_text
+
+	db.session.commit()
+
+
+	# Return a JSON response indicating success
+	return jsonify({'success': True})
+
 @main_bp.route("/contact", methods=["GET", "POST"])
 def contact():
 	"""Standard `contact` form."""
@@ -117,7 +158,6 @@ def contact():
 def logout():
 	logout_user()
 	return redirect(url_for('main_bp.index'))
-
 
 
 # route for photo uploads for the post. TODO: Fix this to use in post creation:

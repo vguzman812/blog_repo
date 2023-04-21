@@ -2,10 +2,11 @@ from flask import Flask, render_template, redirect, url_for, flash, abort, make_
 from flask import Blueprint, request, session
 from flask_login import login_required, logout_user, current_user, login_user
 from .forms import LoginForm, RegisterForm
-from .models import db, User
+from .models import db, User, BlogPost, Comment
 from . import login_manager
 from functools import wraps
 from datetime import datetime
+
 # Blueprint Configuration
 auth_bp = Blueprint(
 	'auth_bp', __name__,
@@ -67,7 +68,7 @@ def register():
 			db.session.add(user)
 			db.session.commit()  # Create new user
 			login_user(user)  # Log in as newly created user
-			return redirect(url_for('auth_bp.dashboard'))
+			return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 	return render_template(
 		'register.html',
 		form=form,
@@ -84,7 +85,7 @@ def login():
 	"""
 	# Bypass if user is logged in
 	if current_user.is_authenticated:
-		return redirect(url_for('auth_bp.dashboard'))
+		return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 
 	form = LoginForm()
 	# Validate login attempt
@@ -94,8 +95,7 @@ def login():
 		if user and user.check_password(password=form.password.data):
 			login_user(user)
 			user.last_login = datetime.now()
-			next_page = request.args.get('next')
-			return redirect(next_page or url_for('auth_bp.dashboard'))
+			return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 		flash('Invalid email/password combination')
 		return redirect(url_for('auth_bp.login'))
 	return render_template(
@@ -103,9 +103,24 @@ def login():
 		form=form,
 	)
 
-@auth_bp.route('/dashboard', methods=['GET'])
-def dashboard():
+
+@auth_bp.route('/dashboard/user/<int:user_id>', methods=['GET'])
+@login_required
+def dashboard(user_id):
 	"""Logged in user dashboard."""
+	user_posts = BlogPost.query.filter_by(author_id=user_id).all()
 	return render_template(
 		'dashboard.html',
+		user_posts=user_posts,
+	)
+@auth_bp.route('/dashboard/user/<int:user_id>/comments', methods=['GET'])
+@login_required
+def dashboard_comments(user_id):
+	"""Logged in user dashboard."""
+	all_posts = BlogPost.query.all()
+	user_comments = Comment.query.filter_by(author_id=user_id).all()
+	return render_template(
+		'dashboard.html',
+		user_comments=user_comments,
+		all_posts=all_posts,
 	)

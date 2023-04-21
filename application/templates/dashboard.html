@@ -63,7 +63,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link d-flex">
+                            <a href="{{ url_for('auth_bp.dashboard', user_id=current_user.id) }}"
+                               class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#book"/>
                                 </svg>
@@ -71,7 +72,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link d-flex">
+                            <a href="{{ url_for('auth_bp.dashboard_comments', user_id=current_user.id) }}"
+                               class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#thought"/>
                                 </svg>
@@ -94,19 +96,22 @@
                                 Following
                             </a>
                         </li>
-
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle theme-switch" href="#" role="button"
+                               data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                Dropdown
+                                Color Theme
                             </a>
-                            <ul class="dropdown-menu patterned">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <ul class="dropdown-menu patterned text-center">
+                                <li class="d-flex align-items-center justify-content-center">
+                                    <a class="dropdown-item light-theme-toggler" href="#">Light</a>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <li class="d-flex align-items-center justify-content-center">
+                                    <a class="dropdown-item dark-theme-toggler" href="#">Dark</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -118,85 +123,63 @@
         <div>
             <header>
                 <h2 class="display-3 m-5 text-quaternary-color text-center">
+                    {% if user_posts %}
                     Your Posts
+                    <h3 class="display-6 m-3 text-center">
+                        <a href="{{url_for('main_bp.create_post') }}" class="text-center text-quaternary-color">
+                            Create A New Post
+                        </a>
+                    </h3>
+                    {% elif user_comments %}
+                    Your Comments
+                    {% endif %}
+
                 </h2>
+
             </header>
         </div>
+        {% if user_posts %}
         <div class="post-container text-quaternary-color mt-5 pt-5 text-center">
+            {% for post in user_posts %}
             <div class="post align-items-start">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic05.jpg') }});">
-                </div>
+                <a href="{{ url_for('main_bp.post', post_id=post.id) }}">
+                    <div class="post-image"
+                         style="background-image: url({{ post.img_url }});">
+                    </div>
+                </a>
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text m-3">{{ post.subtitle }}</p>
+                    <a href="{{ url_for('main_bp.post', post_id=post.id) }}" class="btn btn-secondary m-3">
+                        Full Story
+                    </a>
+                    <a href="{{ url_for('main_bp.edit_post', post_id=post.id) }}" class="btn btn-secondary m-3">
+                        Edit Post
+                    </a>
                 </div>
             </div>
-            <div class="post">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic06.jpg') }});">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
-                </div>
-            </div>
-            <div class="post">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic07.jpg') }});">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
-                </div>
-            </div>
-            <div class="post">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic08.jpg') }});">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
-                </div>
-            </div>
-            <div class="post">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic09.jpg') }});">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
-                </div>
-            </div>
-            <div class="post">
-                <div class="post-image"
-                     style="background-image: url({{ url_for('static', filename='img/pic10.jpg') }});">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text m-3">Some quick example text to build on the card title and make up the bulk of
-                        the card's
-                        content.</p>
-                    <a href="#" class="btn btn-secondary mt-3">Go somewhere</a>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
+        {% elif user_comments %}
+        <div class="post-container text-quaternary-color py-3">
+            {% for comment in user_comments %}
+            <div class=" d-flex flex-column comment text-center shadow p-3 bg-secondary-color rounded">
+                <p class="my-3"> post:
+                    <br>
+                    <br>
+                    {% for post in all_posts if post.id == comment.post_id %}
+                    <a href="{{ url_for('main_bp.post', post_id=post.id) }}"
+                       class="text-decoration-none link-hover-opacity-75">
+                        {{ post.title }}
+                    </a>
+                    {% endfor %}
+
+                </p>
+                <p class="my-3">comment: {{ comment.text|safe }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
     </div>
 </main>

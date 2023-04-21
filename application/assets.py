@@ -69,6 +69,11 @@ def compile_main_assets(assets):
 			filters=js_filters,
 			output='dist/js/nav.js'
 		),
+		'js_post': Bundle(
+			'src/js/post.js',
+			filters=js_filters,
+			output='dist/js/post.js'
+		),
 	}
 
 	assets.register(bundles)
