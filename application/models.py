@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 
 # User table for database
@@ -24,9 +25,13 @@ class User(UserMixin, db.Model):
 	)
 	created_on = db.Column(
 		db.DateTime,
+		default=datetime.utcnow
 	)
 	last_login = db.Column(
 		db.DateTime,
+	)
+	avatar_url = db.Column(
+		db.String(),
 	)
 	posts = relationship(
 		"BlogPost",
@@ -79,6 +84,7 @@ class BlogPost(db.Model):
 	)
 	created_on = db.Column(
 		db.DateTime,
+		default=datetime.utcnow,
 	)
 	body = db.Column(
 		db.Text,
@@ -127,9 +133,7 @@ class Comment(db.Model):
 	)
 	created_on = db.Column(
 		db.DateTime,
-		index=False,
-		unique=False,
-		nullable=False,
+		default=datetime.utcnow,
 	)
 
 	def __repr__(self):

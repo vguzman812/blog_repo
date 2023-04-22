@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, HiddenField
+from wtforms import StringField, SubmitField, PasswordField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired, URL, Email, EqualTo, Length
 from flask_ckeditor import CKEditorField
 
@@ -54,7 +54,7 @@ class LoginForm(FlaskForm):
 
 class CommentForm(FlaskForm):
 	post_id = HiddenField()
-	comment_text = CKEditorField("Comment", validators=[
+	comment_text = TextAreaField("Comment", validators=[
 		DataRequired(),
 	])
 	submit = SubmitField("Submit Comment")
