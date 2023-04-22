@@ -20,6 +20,18 @@ main_bp = Blueprint(
 )
 
 
+# Invalid URL
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html'), 404
+
+
+# #Internal server error
+@app.errorhandler(500)
+def internal_server_error(e):
+	return render_template('500.html'), 500
+
+
 # home page
 @main_bp.route('/')
 def index():
@@ -80,6 +92,7 @@ def create_post():
 	"""
 	form = CreatePostForm()
 	if form.validate_on_submit():
+		flash('Post successfully created')
 		new_post = BlogPost(
 			title=form.title.data,
 			subtitle=form.subtitle.data,
@@ -110,6 +123,7 @@ def edit_post(post_id):
 		body=post.body
 	)
 	if form.validate_on_submit():
+		flash('Post successfully edited.')
 		post.title = form.title.data
 		post.subtitle = form.subtitle.data
 		post.img_url = form.img_url.data
@@ -136,9 +150,9 @@ def update_comment():
 
 	db.session.commit()
 
-
 	# Return a JSON response indicating success
 	return jsonify({'success': True})
+
 
 @main_bp.route("/contact", methods=["GET", "POST"])
 def contact():

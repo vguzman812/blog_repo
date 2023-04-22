@@ -49,6 +49,11 @@ def register():
 	GET requests serve sign-up page.
 	POST requests validate form & user creation.
 	"""
+	# Bypass if user is logged in
+	if current_user.is_authenticated:
+		flash('Log out first to register a new account.')
+		return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
+
 	form = RegisterForm()
 	if form.validate_on_submit():
 		existing_user_by_email = User.query.filter_by(email=form.email.data).first()
@@ -68,6 +73,7 @@ def register():
 			db.session.add(user)
 			db.session.commit()  # Create new user
 			login_user(user)  # Log in as newly created user
+			flash('Successfully Registered!')
 			return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 	return render_template(
 		'register.html',
@@ -85,6 +91,7 @@ def login():
 	"""
 	# Bypass if user is logged in
 	if current_user.is_authenticated:
+		flash('You are already logged in.')
 		return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 
 	form = LoginForm()
@@ -113,6 +120,8 @@ def dashboard(user_id):
 		'dashboard.html',
 		user_posts=user_posts,
 	)
+
+
 @auth_bp.route('/dashboard/user/<int:user_id>/comments', methods=['GET'])
 @login_required
 def dashboard_comments(user_id):

@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap5
 from flask_login import LoginManager
 from flask_assets import Environment
+from flask_migrate import Migrate
 import openai
+from sqlalchemy import MetaData
 from os import environ, path
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
@@ -12,10 +14,21 @@ from flask_ckeditor import CKEditor
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, '../.env'))
 
+metadata = MetaData(
+    naming_convention={
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+    }
+)
+
 # Globally accessible libraries
-db = SQLAlchemy()
+db = SQLAlchemy(metadata=metadata)
 bootstrap = Bootstrap5()
 login_manager = LoginManager()
+migrate = Migrate()
 ckeditor = CKEditor()
 
 openai.api_key = environ.get('OPENAI_API_KEY')
@@ -48,5 +61,7 @@ def init_app():
 
 		# Create sql tables for our data models
 		db.create_all()
+
+		migrate.init_app(app, db, render_as_batch=True)
 
 		return app
