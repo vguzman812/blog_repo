@@ -115,7 +115,7 @@ def create_post():
 @main_bp.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @login_required
 def edit_post(post_id):
-	post = BlogPost.query.get(post_id)
+	post = BlogPost.query.get_or_404(post_id)
 	form = CreatePostForm(
 		title=post.title,
 		subtitle=post.subtitle,

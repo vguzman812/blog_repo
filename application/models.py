@@ -3,6 +3,8 @@ from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from hashlib import md5
+
 
 
 # User table for database
@@ -17,7 +19,7 @@ class User(UserMixin, db.Model):
 		unique=True,
 	)
 	password = db.Column(
-		db.String(500),
+		db.String(),
 	)
 	username = db.Column(
 		db.String(50),
@@ -32,6 +34,9 @@ class User(UserMixin, db.Model):
 	)
 	avatar_url = db.Column(
 		db.String(),
+	)
+	about_me = db.Column(
+		db.String(280),
 	)
 	posts = relationship(
 		"BlogPost",
@@ -53,6 +58,13 @@ class User(UserMixin, db.Model):
 	def check_password(self, password):
 		"""Check hashed password."""
 		return check_password_hash(self.password, password)
+
+	def avatar(self, size):
+		digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+		return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+			digest,
+			size,
+		)
 
 	def __repr__(self):
 		return '<User {}>'.format(self.username)

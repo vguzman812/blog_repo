@@ -101,7 +101,8 @@ def login():
 
 		if user and user.check_password(password=form.password.data):
 			login_user(user)
-			user.last_login = datetime.now()
+			user.last_login = datetime.utcnow()
+			db.session.commit()
 			return redirect(url_for('auth_bp.dashboard', user_id=current_user.id))
 		flash('Invalid email/password combination')
 		return redirect(url_for('auth_bp.login'))
