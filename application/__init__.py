@@ -14,6 +14,7 @@ from flask_ckeditor import CKEditor
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, '../.env'))
 
+# Needed for Flask-Migrate / SQLite constraint naming discrepancies.
 metadata = MetaData(
     naming_convention={
     "ix": 'ix_%(column_0_label)s',
