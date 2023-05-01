@@ -5,6 +5,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from hashlib import md5
 
+# Followers association Table
+followers = db.Table(
+	'followers',
+	db.Column(
+		'follower_id',
+		db.Integer,
+		db.ForeignKey('users.id')
+	),
+	db.Column(
+		'followed_id',
+		db.Integer,
+		db.ForeignKey('users.id')
+	),
+)
 
 
 # User table for database
@@ -40,11 +54,22 @@ class User(UserMixin, db.Model):
 	)
 	posts = relationship(
 		"BlogPost",
-		back_populates="author",
+		backref="author",
+		lazy='dynamic',
 	)
 	comments = relationship(
 		"Comment",
-		back_populates="comment_author",
+		backref="comment_author",
+		lazy='dynamic',
+	)
+
+	followed = relationship(
+		'User',
+		secondary=followers,
+		primaryjoin=(followers.c.follower_id == id),
+		secondaryjoin=(followers.c.followed_id == id),
+		backref=db.backref('followers', lazy='dynamic'),
+		lazy='dynamic',
 	)
 
 	def set_password(self, password):
@@ -66,6 +91,33 @@ class User(UserMixin, db.Model):
 			size,
 		)
 
+	def follow(self, user):
+		if not self.is_following(user):
+			self.followed.append(user)
+
+	def unfollow(self, user):
+		if self.is_following(user):
+			self.followed.remove(user)
+
+	def is_following(self, user):
+		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
+	def followed_users(self):
+		return User.query.join(
+			followers,
+			(followers.c.followed_id == User.id)
+		).filter(
+			followers.c.follower_id == self.id
+		)
+
+	def following_users(self):
+		return User.query.join(
+			followers,
+			(followers.c.follower_id == User.id)
+		).filter(
+			followers.c.followed_id == self.id
+		)
+
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
 
@@ -80,10 +132,6 @@ class BlogPost(db.Model):
 	author_id = db.Column(
 		db.Integer,
 		db.ForeignKey("users.id"),
-	)
-	author = relationship(
-		"User",
-		back_populates="posts",
 	)
 	title = db.Column(
 		db.String(100),
@@ -108,7 +156,8 @@ class BlogPost(db.Model):
 	)
 	comments = relationship(
 		"Comment",
-		back_populates="parent_post",
+		backref="parent_post",
+		lazy='dynamic',
 	)
 
 	def __repr__(self):
@@ -130,14 +179,6 @@ class Comment(db.Model):
 	author_id = db.Column(
 		db.Integer,
 		db.ForeignKey("users.id"),
-	)
-	parent_post = relationship(
-		"BlogPost",
-		back_populates="comments",
-	)
-	comment_author = relationship(
-		"User",
-		back_populates="comments",
 	)
 	text = db.Column(
 		db.Text,

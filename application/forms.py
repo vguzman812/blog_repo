@@ -81,3 +81,29 @@ class ContactForm(FlaskForm):
 		Length(min=4, message='Your message is too short.'),
 	])
 	submit = SubmitField('Submit')
+
+
+class EditProfileForm(FlaskForm):
+	new_username = StringField("Username", validators=[
+		DataRequired(),
+	])
+	new_email = StringField("Email", validators=[
+		DataRequired(),
+		Email(message="Not a valid email address.")
+	])
+	new_password = PasswordField("Password", validators=[
+		DataRequired(),
+		Length(min=6, message="Minimum length is 6 characters"),
+	])
+	confirm_password = PasswordField("Confirm Password", validators=[
+		DataRequired(),
+		EqualTo('password', message="Passwords must match.")
+	])
+	about_me = TextAreaField('About me', validators=[
+		Length(min=0, max=280),
+	])
+	submit = SubmitField("Sign Me Up!")
+
+
+class EmptyForm(FlaskForm):
+	submit = SubmitField('Submit')
