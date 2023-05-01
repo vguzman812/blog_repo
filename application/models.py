@@ -46,9 +46,6 @@ class User(UserMixin, db.Model):
 	last_login = db.Column(
 		db.DateTime,
 	)
-	avatar_url = db.Column(
-		db.String(),
-	)
 	about_me = db.Column(
 		db.String(280),
 	)
