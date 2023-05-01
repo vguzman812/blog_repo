@@ -29,6 +29,9 @@
             <h3>
                 {{post.subtitle}}
             </h3>
+            <h5>
+                By: <a href="{{ url_for('auth_bp.dashboard', user_id=author.id) }}"> {{ author.username }} </a>
+            </h5>
         </header>
         <div class="row justify-content-center my-3 pb-5">
             <img class="col-9" src="{{ post.img_url }}" alt="">
@@ -46,123 +49,65 @@
         {% endif %}
     </article>
     <!--           Comments Area -->
-    <form method="POST"
-          class="container text-center text-quaternary-color shadow rounded p-3 my-5">
-        {% for message in get_flashed_messages() %}
-        <div class="mb-3">
-            <p class="text-warning">{{ message }}</p>
-        </div>
-        {% endfor %}
-        {{ form.csrf_token }}
-        {{ render_hidden_errors(form) }}
-        {{ form.post_id(value=post.id) }}
 
-        <div class="row mb-4 justify-content-center">
-            <div class="col">{{ render_field(form.comment_text, placeholder='Enter your comment here...') }}</div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="mb-3">{{ render_field(form.submit) }}</div>
-        </div>
-    </form>
-
-
-    <div class="col-lg-8 col-md-10 mx-auto text-quaternary-colortext-center">
-        <ul>
-            {% for comment in post.comments: %}
-            <li class="d-flex align-items-center justify-content-evenly bg-secondary-color rounded shadow my-3 row">
-                <div class=" col-2 commenterImage bg-ter">
-                </div>
-                <div class="comment-text py-3 col-6">
-                    {{comment.text|safe}}
-                </div>
-                <div class="py-3 col-3"> By: {{comment.comment_author.username}}</div>
-                {% if current_user.id == comment.author_id %}
-                <div class="row justify-content-center">
-                    <button class="col-3 btn btn-primary my-3">
-                        Delete Comment
-                    </button>
-                </div>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="container my-5">
+    <hr>
+    <div class="container my-5 text-quaternary-color">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-md-7">
-                <div class="p-3">
-                    <h6>Comments</h6>
+                {% if current_user.is_authenticated %}
+                <div class="mt-3 d-flex p-3 align-items-start">
+                    <img src="{{ current_user.avatar(50) }}" class="rounded-circle me-2">
+                    <form method="POST"
+                          class="container text-center text-quaternary-color p-3 mb-5 shadow">
+                        {% for message in get_flashed_messages() %}
+                        <div class="mb-3">
+                            <p class="text-warning">{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                        {{ form.csrf_token }}
+                        {{ render_hidden_errors(form) }}
+                        {{ form.post_id(value=post.id) }}
+
+                        <div class="row mb-4 justify-content-center">
+                            <div class="col">{{ render_field(form.comment_text, placeholder='Enter your comment...') }}
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="mb-3">{{ render_field(form.submit) }}</div>
+                        </div>
+                    </form>
                 </div>
-                <div class="mt-3 d-flex flex-row align-items-center p-3 form-color">
-                    <img src="https://i.imgur.com/zQZSWrt.jpg" width="50" class="rounded-circle me-2">
-                    <input type="text" class="form-control" placeholder="Enter your comment...">
-                </div>
+                {% endif %}
                 <div class="mt-2">
-                    <div class="d-flex p-3">
-                        <img src="https://i.imgur.com/zQZSWrt.jpg" width="40" height="40"
-                             class="rounded-circle me-3">
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-2">Brian selter</span>
+                    <ul>
+                        {% for comment in post.comments %}
+                        <li class="d-flex p-3 align-items-start">
+                            <img src="{{ comment.comment_author.avatar(40) }}"
+                                 class="rounded-circle me-3">
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between">
+                                    <span class="me-2">{{ comment.comment_author.username }}</span>
+                                    <small>Posted: {{ comment.created_on }}</small>
                                 </div>
-                                <small>12h ago</small>
-                            </div>
-                            <p class="text-justify comment-text mb-0">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                Ut enim ad minim veniam</p>
-                            <div class="d-flex flex-row user-feed">
-                                <span class="wish"><i class="fa fa-heartbeat me-2"></i>24</span>
-                                <span class="ms-3"><i class="fa fa-comments-o me-2"></i>Reply</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row p-3">
-                        <img src="https://i.imgur.com/3J8lTLm.jpg" width="40" height="40"
-                             class="rounded-circle mr-3">
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex flex-row align-items-center">
-                                    <span class="mr-2">Seltos Majito</span>
-                                    <small class="c-badge">Top Comment</small>
+                                <div class="d-flex flex-column align-items-center">
+                                    <span class="align-self-start my-3">{{ comment.text|safe }}</span>
+                                    {% if current_user.id == comment.author_id %}
+                                    <div>
+                                        <a href="#" class="mx-3">
+                                        Delete Comment
+                                    </a>
+                                        <a href="#" class="mx-3">
+                                            Edit Comment
+                                        </a>
+                                    </div>
                                 </div>
-                                <small>2h ago</small>
+                                {% endif %}
                             </div>
-                            <p class="text-justify comment-text mb-0">Tellus in hac habitasse platea dictumst
-                                vestibulum. Lectus nulla at volutpat diam ut venenatis tellus. Aliquam etiam erat
-                                velit scelerisque in dictum non consectetur. Sagittis nisl rhoncus mattis rhoncus
-                                urna neque viverra justo nec. Tellus cras adipiscing enim eu turpis egestas pretium
-                                aenean pharetra. Aliquam faucibus purus in massa.</p>
-                            <div class="d-flex flex-row user-feed">
-                                <span class="wish"><i class="fa fa-heartbeat mr-2"></i>14</span>
-                                <span class="ml-3"><i class="fa fa-comments-o mr-2"></i>Reply</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-row p-3">
-                        <img src="https://i.imgur.com/agRGhBc.jpg" width="40" height="40"
-                             class="rounded-circle mr-3">
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex flex-row align-items-center">
-                                    <span class="mr-2">Maria Santola</span>
-                                    <small class="c-badge">Top Comment</small>
-                                </div>
-                                <small>12h ago</small>
-                            </div>
-                            <p class="text-justify comment-text mb-0"> Id eu nisl nunc mi ipsum faucibus. Massa
-                                massa ultricies mi quis hendrerit dolor. Arcu bibendum at varius vel pharetra vel
-                                turpis nunc eget. Habitasse platea dictumst quisque sagittis purus sit amet
-                                volutpat. Urna condimentum mattis pellentesque id.Lorem ipsum dolor sit amet,
-                                consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                                magna aliqua. Ut enim ad minim veniam</p>
-                            <div class="d-flex flex-row user-feed">
-                                <span class="wish"><i class="fa fa-heartbeat mr-2"></i>54</span>
-                                <span class="ml-3"><i class="fa fa-comments-o mr-2"></i>Reply</span>
-                            </div>
-                        </div>
-                    </div>
+                        </li>
+                        <hr>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

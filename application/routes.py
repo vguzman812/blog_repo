@@ -57,6 +57,7 @@ def post(post_id):
 	"""
 	form = CommentForm()
 	requested_post = BlogPost.query.get_or_404(post_id)
+	author = User.query.get(requested_post.author_id)
 
 	if form.validate_on_submit():
 		if not current_user.is_authenticated:
@@ -76,6 +77,7 @@ def post(post_id):
 	return render_template(
 		"post.html",
 		post=requested_post,
+		author=author,
 		form=form,
 		current_user=current_user,
 	)
