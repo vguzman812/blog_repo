@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, flash, abort, make_response
 from flask import Blueprint, request, session
 from flask_login import login_required, logout_user, current_user, login_user
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, EmptyForm
 from .models import db, User, BlogPost, Comment
 from . import login_manager
 from functools import wraps
@@ -115,11 +115,15 @@ def login():
 @auth_bp.route('/dashboard/user/<int:user_id>', methods=['GET'])
 @login_required
 def dashboard(user_id):
+	form = EmptyForm()
 	"""Logged in user dashboard."""
+	user = User.query.get_or_404(user_id)
 	user_posts = BlogPost.query.filter_by(author_id=user_id).all()
 	return render_template(
 		'dashboard.html',
 		user_posts=user_posts,
+		user=user,
+		form=form,
 	)
 
 
@@ -127,10 +131,98 @@ def dashboard(user_id):
 @login_required
 def dashboard_comments(user_id):
 	"""Logged in user dashboard."""
+	form = EmptyForm()
+	user = User.query.get_or_404(user_id)
 	all_posts = BlogPost.query.all()
 	user_comments = Comment.query.filter_by(author_id=user_id).all()
 	return render_template(
 		'dashboard.html',
 		user_comments=user_comments,
 		all_posts=all_posts,
+		user=user,
+		form=form,
 	)
+
+
+@auth_bp.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
+@login_required
+def dashboard_edit(user_id):
+	"""
+	Edit page for user info. User can edit username, email, password, and about me.
+	:param user_id:
+	:return:
+	"""
+	return render_template(
+		'dashboard.html',
+	)
+
+
+@auth_bp.route('/follow/<int:user_id>', methods=['POST'])
+@login_required
+def follow(user_id):
+	form = EmptyForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(id=user_id).first()
+		if user is None:
+			flash('User {} not found.'.format(user_id))
+			return redirect(url_for('main_bp.index'))
+		if user == current_user:
+			flash('You cannot follow yourself!')
+			return redirect(url_for('auth_bp.dashboard', user_id=user_id))
+		current_user.follow(user)
+		db.session.commit()
+		flash('You are following user {}!'.format(user_id))
+		return redirect(url_for('auth_bp.dashboard', user_id=user_id))
+	else:
+		return redirect(url_for('main_bp.index'))
+
+
+@auth_bp.route('/dashboard/user/<int:user_id>/following', methods=['GET'])
+@login_required
+def following(user_id):
+	"""Logged in user dashboard."""
+	form = EmptyForm()
+	user = User.query.get_or_404(user_id)
+	followed_users = user.followed_users().all()
+
+	return render_template(
+		'dashboard.html',
+		user=user,
+		followed_users=followed_users,
+		form=form,
+	)
+
+@auth_bp.route('/dashboard/user/<int:user_id>/followers', methods=['GET'])
+@login_required
+def followers(user_id):
+	"""Logged in user dashboard."""
+	form = EmptyForm()
+	user = User.query.get_or_404(user_id)
+	following_users = user.following_users().all()
+
+	return render_template(
+		'dashboard.html',
+		user=user,
+		followers=following_users,
+		form=form,
+	)
+
+
+@auth_bp.route('/unfollow/<int:user_id>', methods=['POST'])
+@login_required
+def unfollow(user_id):
+	form = EmptyForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(id=user_id).first()
+		if user is None:
+			flash('User {} not found.'.format(user_id))
+			return redirect(url_for('main_bp.index'))
+		if user == current_user:
+			flash('You cannot unfollow yourself!')
+			return redirect(url_for('auth_bp.dashboard', user_id=user_id))
+		current_user.unfollow(user)
+		db.session.commit()
+		flash('You are not following {}.'.format(user_id))
+		return redirect(url_for('auth_bp.dashboard', user_id=user_id))
+	else:
+		return redirect(url_for('main_bp.index'))
