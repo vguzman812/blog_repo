@@ -181,8 +181,11 @@
                     {% elif user_comments %}
                     {{ user.username }}'s Comments
 
-                    {% elif user_followers %}
+                    {% elif followers %}
                     {{ user.username }}'s Followers
+
+                    {% elif followed_users %}
+                    {{ user.username }} is Following
 
                     {% else %}
                     Nothing to see here...
@@ -253,31 +256,77 @@
             </div>
             {% endfor %}
         </div>
-        {% elif following %}
-        <div class="post-container text-quaternary-color py-3 bg-light">
-            {% for followed_user in followed_users %}
-            <div class=" d-flex flex-column text-center shadow p-3 bg-secondary-color rounded">
-                <p class="my-3 text-quaternary-color">
-                    The user {{user.username}} is following:
-                    <br>
-                    <br>
-                    {{ followed_user.username }}
-                </p>
-            </div>
-            {% endfor %}
+        {% elif followed_users %}
+        <div class="container text-quaternary-color py-3 d-flex justify-content-center">
+            <table class="table text-quaternary-color rounded">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Followers: {{ user.following_users().count() }}</th>
+                    <th scope="col">Following: {{ user.followed_users().count() }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for followed_user in followed_users %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('auth_bp.dashboard', user_id=followed_user.id) }}"
+                           class="text-decoration-none">
+                            {{ followed_user.username }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('auth_bp.followers', user_id=followed_user.id) }}"
+                           class="text-decoration-none">
+                            {{ followed_user.following_users().count() }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('auth_bp.following', user_id=followed_user.id) }}"
+                           class="text-decoration-none">
+                            {{ followed_user.followed_users().count()}}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
         {% elif followers %}
-        <div class="post-container text-quaternary-color py-3 bg-light">
-            {% for follower in followers %}
-            <div class=" d-flex flex-column text-center shadow p-3 bg-secondary-color rounded">
-                <p class="my-3 text-quaternary-color">
-                    The user {{user.username}} is followed by:
-                    <br>
-                    <br>
-                    {{ follower.username }}
-                </p>
-            </div>
-            {% endfor %}
+        <div class="text-quaternary-color py-3">
+            <table class="table text-quaternary-color rounded">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Followers: {{ user.following_users().count() }}</th>
+                    <th scope="col">Following: {{ user.followed_users().count() }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for follower in followers %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('auth_bp.dashboard', user_id=follower.id) }}"
+                           class="text-decoration-none">
+                            {{ follower.username }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('auth_bp.followers', user_id=follower.id) }}"
+                           class="text-decoration-none">
+                            {{ follower.following_users().count() }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('auth_bp.following', user_id=follower.id) }}"
+                           class="text-decoration-none">
+                            {{ follower.followed_users().count() }}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
         {% endif %}
 

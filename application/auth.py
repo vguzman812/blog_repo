@@ -184,6 +184,7 @@ def following(user_id):
 	form = EmptyForm()
 	user = User.query.get_or_404(user_id)
 	followed_users = user.followed_users().all()
+	print(followed_users)
 
 	return render_template(
 		'dashboard.html',
@@ -192,6 +193,7 @@ def following(user_id):
 		form=form,
 	)
 
+
 @auth_bp.route('/dashboard/user/<int:user_id>/followers', methods=['GET'])
 @login_required
 def followers(user_id):
@@ -199,6 +201,7 @@ def followers(user_id):
 	form = EmptyForm()
 	user = User.query.get_or_404(user_id)
 	following_users = user.following_users().all()
+	print(following_users)
 
 	return render_template(
 		'dashboard.html',
