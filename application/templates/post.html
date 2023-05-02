@@ -1,12 +1,7 @@
 {% extends 'layout.html' %}
 
-{% block head %}
-{% assets "css_bootstrap" %}
-<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
-{% endassets %}
-{% assets "css_main" %}
-<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
-{% endassets %}
+{% block styles %}
+{{ super() }}
 {% assets "css_post" %}
 <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
 {% endassets %}
@@ -119,6 +114,7 @@
 {% endblock %}
 
 {% block scripts %}
+{{ super() }}
 {% assets "js_post" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
