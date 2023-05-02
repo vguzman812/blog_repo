@@ -26,14 +26,6 @@ class Config:
     SESSION_TYPE = "redis"
     SESSION_REDIS = redis.from_url(REDIS_URI)
 
-    # Email Configuration
-    MAIL_SERVER = environ.get('MAIL_SERVER')
-    MAIL_PORT = int(environ.get('MAIL_PORT') or 25)
-    MAIL_USE_TLS = environ.get('MAIL_USE_TLS') is not None
-    MAIL_USERNAME = environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
-    ADMINS = ['vguzman812@gmail.com']
-
 
 class ProdConfig(Config):
     FLASK_ENV = 'production'
@@ -50,4 +42,3 @@ class DevConfig(Config):
     # Flask-Assets
     ASSETS_DEBUG = True
     COMPRESSOR_DEBUG = True
-
