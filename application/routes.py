@@ -138,35 +138,16 @@ def edit_post(post_id):
 	return render_template("create_post.html", form=form, current_user=current_user)
 
 
-@main_bp.route('/update-comment', methods=['POST'])
-def update_comment():
-	# Get the comment ID and new comment text from the request's JSON data
-	data = request.get_json()
-	comment_id = data.get('comment_id')
-	comment_text = data.get('comment_text')
-	print(post_id)
-
-	# Update the comment in your database or wherever you store your comments
-	comment = Comment.query.get(comment_id)
-	comment.text = comment_text
-
-	db.session.commit()
-
-	# Return a JSON response indicating success
-	return jsonify({'success': True})
-
-
-@main_bp.route("/contact", methods=["GET", "POST"])
-def contact():
-	"""Standard `contact` form."""
-	form = ContactForm()
-	if form.validate_on_submit():
-		return redirect(url_for("success"))
-	return render_template(
-		"contact.html",
-		form=form,
-		template="form-template"
-	)
+@main_bp.route('/delete_comment/<int:comment_id>', methods=['GET'])
+@login_required
+def delete_comment(comment_id):
+	comment = Comment.query.get_or_404(comment_id)
+	if not comment.author_id == current_user.id:
+		return redirect(url_for('main_bp.post', post_id=comment.post_id))
+	else:
+		db.session.delete(comment)
+		db.session.commit()
+	return redirect(url_for('main_bp.post', post_id=comment.post_id))
 
 
 @main_bp.route('/logout')
@@ -174,26 +155,3 @@ def contact():
 def logout():
 	logout_user()
 	return redirect(url_for('main_bp.index'))
-
-
-# route for photo uploads for the post. TODO: Fix this to use in post creation:
-#  https://flask-wtf.readthedocs.io/en/1.0.x/form/#file-uploads
-# @app.route('/upload', methods=['GET', 'POST'])
-# def upload():
-#     form = PhotoForm()
-#
-#     if form.validate_on_submit():
-#         f = form.photo.data
-#         filename = secure_filename(f.filename)
-#         f.save(os.path.join(
-#             app.instance_path, 'photos', filename
-#         ))
-#         return redirect(url_for('index'))
-#
-#     return render_template('upload.html', form=form)
-
-
-@main_bp.route('/user/<username>')
-def profile(username):
-	# Logic goes here
-	pass
