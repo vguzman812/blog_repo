@@ -68,7 +68,7 @@ def post(post_id):
 			text=form.comment_text.data,
 			author_id=current_user.id,
 			post_id=form.post_id.data,
-			created_on=dt.today(),
+			created_on=dt.utcnow(),
 		)
 		db.session.add(new_comment)
 		db.session.commit()
