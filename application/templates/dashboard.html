@@ -191,6 +191,7 @@
 
             </header>
             <div class="d-flex justify-content-center">
+                <p class="text-quaternary-color"> Last login: {{ moment(user.last_login).fromNow() }}</p>
                 {% if not user == current_user %}
                 {% if not current_user.is_following(user) %}
                 <div class="">
@@ -223,6 +224,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
                     <p class="card-text m-3">{{ post.subtitle }}</p>
+                    <p> created: {{ moment(post.created_on).format('LL') }}</p>
                     <a href="{{ url_for('main_bp.post', post_id=post.id) }}" class="btn btn-secondary m-3">
                         Full Story
                     </a>
@@ -249,6 +251,7 @@
 
                 </p>
                 <p class="my-3">comment: {{ comment.text|safe }}</p>
+                <p>created: {{ moment(comment.created_on).format('LL') }}</p>
             </div>
             {% endfor %}
         </div>
