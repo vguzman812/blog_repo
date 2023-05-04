@@ -74,6 +74,11 @@ def compile_main_assets(assets):
 			filters=js_filters,
 			output='dist/js/post.js'
 		),
+		'js_search': Bundle(
+			'src/js/search.js',
+			filters=js_filters,
+			output='dist/js/search.js'
+		),
 	}
 
 	assets.register(bundles)

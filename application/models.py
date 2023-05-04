@@ -1,9 +1,11 @@
-from . import db
+from . import db, whooshee
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from hashlib import md5
+
+
 
 # Followers association Table
 followers = db.Table(
@@ -120,6 +122,7 @@ class User(UserMixin, db.Model):
 
 
 # Configure Blog Post Table
+@whooshee.register_model('title', 'subtitle', 'body')
 class BlogPost(db.Model):
 	__tablename__ = "blog_posts"
 	id = db.Column(

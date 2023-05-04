@@ -49,10 +49,14 @@
                     </ul>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input type="search" class="form-control me-2" placeholder="Search Posts" aria-label="Search">
-                <button type="submit" class="btn btn-outline-primary">Search</button>
-            </form>
+            <div class="dropdown">
+                <form class="d-flex" id="search-form">
+                    <input type="search" id="search-input" class="form-control me-2" placeholder="Search Posts"
+                           aria-label="Search">
+                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                </form>
+                <div class="search-results dropdown-menu p-3" aria-labelledby="search-input"></div>
+            </div>
         </div>
     </div>
 </nav>

@@ -9,6 +9,7 @@ from sqlalchemy import MetaData
 from os import environ, path
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
+from flask_whooshee import Whooshee
 
 import config
 
@@ -17,13 +18,13 @@ load_dotenv(path.join(basedir, '../.env'))
 
 # Needed for Flask-Migrate / SQLite constraint naming discrepancies.
 metadata = MetaData(
-    naming_convention={
-    "ix": 'ix_%(column_0_label)s',
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-    }
+	naming_convention={
+		"ix": 'ix_%(column_0_label)s',
+		"uq": "uq_%(table_name)s_%(column_0_name)s",
+		"ck": "ck_%(table_name)s_%(constraint_name)s",
+		"fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+		"pk": "pk_%(table_name)s"
+	}
 )
 
 # Globally accessible libraries
@@ -33,7 +34,7 @@ login_manager = LoginManager()
 migrate = Migrate()
 moment = Moment()
 ckeditor = CKEditor()
-
+whooshee = Whooshee()
 
 
 def init_app(config_class=config.DevConfig):
@@ -47,8 +48,8 @@ def init_app(config_class=config.DevConfig):
 	login_manager.init_app(app)
 	moment.init_app(app)
 	ckeditor.init_app(app)
+	whooshee.init_app(app)
 	assets = Environment(app)
-
 
 	with app.app_context():
 		# Include our Routes

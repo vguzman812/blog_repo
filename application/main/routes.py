@@ -1,11 +1,12 @@
 """Route declaration."""
 
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime as dt
 from application.models import db, User, BlogPost, Comment
 from .forms import CommentForm, CreatePostForm, EmptyForm
 from application.main import bp
+from application.search import reindex_search
 
 
 
@@ -138,6 +139,7 @@ def before_request():
 # home page
 @bp.route('/')
 def index():
+	reindex_search()
 	posts = BlogPost.query.all()
 	page = request.args.get('page', 1, type=int)
 	pagination = BlogPost.query.order_by(BlogPost.created_on.desc()).paginate(page=page, per_page=6)
@@ -209,6 +211,7 @@ def create_post():
 		)
 		db.session.add(new_post)
 		db.session.commit()
+		reindex_search()
 		return redirect(url_for("main.post", post_id=new_post.id))
 	return render_template(
 		"create_post.html",
@@ -235,7 +238,7 @@ def edit_post(post_id):
 		post.body = form.body.data
 
 		db.session.commit()
-
+		reindex_search()
 		return redirect(url_for("main.post", post_id=post.id))
 
 	return render_template("create_post.html", form=form, current_user=current_user)
@@ -251,3 +254,16 @@ def delete_comment(comment_id):
 		db.session.delete(comment)
 		db.session.commit()
 	return redirect(url_for('main.post', post_id=comment.post_id))
+
+
+@bp.route('/search/<keyword>')
+def search(keyword):
+	search_results = BlogPost.query.whooshee_search(keyword).all()
+	results = [
+		{
+			"title": result.title,
+			"subtitle": result.subtitle,
+			"url": url_for('main.post', post_id=result.id),
+		} for result in search_results
+	]
+	return jsonify(results)
