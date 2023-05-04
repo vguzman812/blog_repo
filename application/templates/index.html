@@ -15,7 +15,7 @@
          style="background-image: url({{ all_posts[0].img_url }});">
         <article class="container">
             <div class="article-content row text-with-border justify-content-center">
-                <a href="{{ url_for('main_bp.post', post_id=all_posts[0].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[0].id) }}" class="text-decoration-none text-quaternary-color">
                     <h1 class="my-3">
                         {{all_posts[0].title}}
                     </h1>
@@ -27,7 +27,7 @@
             <div class="row justify-content-center my-3">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main_bp.post', post_id=all_posts[0].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=all_posts[0].id) }}" class="btn btn-outline-light">Full
                             Story</a>
 
                     </li>
@@ -39,7 +39,7 @@
         <article class="d-flex flex-column justify-content-center container-fluid"
                  style="background-image: url({{ all_posts[1].img_url }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main_bp.post', post_id=all_posts[1].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}" class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
                         {{all_posts[1].title}}
                     </h1>
@@ -51,7 +51,7 @@
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main_bp.post', post_id=all_posts[1].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}" class="btn btn-outline-light">Full
                             Story</a>
                     </li>
                 </ul>
@@ -60,7 +60,7 @@
         <article class="d-flex flex-column justify-content-center container-fluid"
                  style="background-image: url({{ all_posts[2].img_url  }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main_bp.post', post_id=all_posts[2].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}" class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
                         {{all_posts[2].title}}
                     </h1>
@@ -72,7 +72,7 @@
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main_bp.post', post_id=all_posts[2].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}" class="btn btn-outline-light">Full
                             Story</a>
                     </li>
                 </ul>
@@ -84,7 +84,7 @@
 <div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
     <article class="container">
         <div class="article-content row text-with-border justify-content-center">
-            <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" class="text-decoration-none text-quaternary-color">
+            <a href="{{ url_for('main.post', post_id=all_posts[3].id) }}" class="text-decoration-none text-quaternary-color">
                 <h1 class="p-3">
                     {{all_posts[3].title}}
                 </h1>
@@ -93,7 +93,7 @@
                 {{all_posts[3].subtitle}}
             </p>
         </div>
-        <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" >
+        <a href="{{ url_for('main.post', post_id=all_posts[3].id) }}" >
             <div class="featured-article-image m-5"
                  style="background-image: url({{ all_posts[3].img_url}});">
             </div>
@@ -101,7 +101,7 @@
         <div class="row justify-content-center my-3">
             <ul class="list-unstyled">
                 <li>
-                    <a href="{{ url_for('main_bp.post', post_id=all_posts[3].id) }}" class="btn btn-secondary">Full Story</a>
+                    <a href="{{ url_for('main.post', post_id=all_posts[3].id) }}" class="btn btn-secondary">Full Story</a>
                 </li>
             </ul>
         </div>
@@ -110,7 +110,7 @@
 <div class="post-container text-quaternary-color mt-5 pt-5" id="post-container">
     {% for post in pagination.items %}
     <div class="post">
-        <a href="{{ url_for('main_bp.post', post_id=post.id) }}">
+        <a href="{{ url_for('main.post', post_id=post.id) }}">
             <div class="post-image"
                  style="background-image: url({{ post.img_url }});">
             </div>
@@ -118,7 +118,7 @@
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
             <p class="card-text m-3">{{ post.subtitle }}</p>
-            <a href="{{ url_for('main_bp.post', post_id=post.id) }}" class="btn btn-secondary mt-3">Full Story</a>
+            <a href="{{ url_for('main.post', post_id=post.id) }}" class="btn btn-secondary mt-3">Full Story</a>
         </div>
     </div>
     {% endfor %}
@@ -128,7 +128,7 @@
         <ul class="pagination">
             {% if pagination.has_prev %}
             <li class="page-item">
-                <a class='page-link' href="{{ url_for('main_bp.index', page=pagination.prev_num) }}#post-container">
+                <a class='page-link' href="{{ url_for('main.index', page=pagination.prev_num) }}#post-container">
                     Previous
                 </a>
             </li>
@@ -137,7 +137,7 @@
             {% if pagination.page != number %}
             <li class="page-item">
                 <a class='page-link'
-                   href="{{ url_for('main_bp.index', page=number) }}#post-container">
+                   href="{{ url_for('main.index', page=number) }}#post-container">
                     {{ number }}
                 </a>
             </li>
@@ -150,7 +150,7 @@
             {% if pagination.has_next %}
             <li class="page-item">
                 <a class='page-link'
-                   href="{{ url_for('main_bp.index', page=pagination.next_num) }}#post-container">
+                   href="{{ url_for('main.index', page=pagination.next_num) }}#post-container">
                     Next
                 </a>
             </li>

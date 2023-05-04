@@ -14,7 +14,6 @@
 {% include 'nav.html' %}
 {% from 'bootstrap5/form.html' import render_field, render_hidden_errors %}
 
-
 <div class="">
     <article class="container">
         <header class="row text-center text-quaternary-color mt-5">
@@ -25,7 +24,7 @@
                 {{post.subtitle}}
             </h3>
             <h5>
-                By: <a href="{{ url_for('auth_bp.dashboard', user_id=author.id) }}"> {{ author.username }} </a>
+                By: <a href="{{ url_for('main.dashboard', user_id=author.id) }}"> {{ author.username }} </a>
             </h5>
         </header>
         <div class="row justify-content-center my-3 pb-5">
@@ -41,7 +40,7 @@
         {% if current_user.id == post.author_id %}
         <div class="row justify-content-center my-5">
             <a class=" col-2 btn btn-primary"
-               href="{{ url_for('main_bp.edit_post', post_id=post.id) }}">
+               href="{{ url_for('main.edit_post', post_id=post.id) }}">
                 Edit Post
             </a>
         </div>
@@ -93,7 +92,8 @@
                                     <span class="align-self-start my-3">{{ comment.text|safe }}</span>
                                     {% if current_user.id == comment.author_id %}
                                     <div>
-                                        <a href="{{ url_for('main_bp.delete_comment', comment_id=comment.id) }}" class="mx-3">
+                                        <a href="{{ url_for('main.delete_comment', comment_id=comment.id) }}"
+                                           class="mx-3">
                                             Delete Comment
                                         </a>
                                         <a href="#" class="mx-3">
