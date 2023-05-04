@@ -43,7 +43,7 @@ class User(UserMixin, db.Model):
 		db.DateTime,
 		default=datetime.utcnow
 	)
-	last_login = db.Column(
+	last_seen = db.Column(
 		db.DateTime,
 	)
 	about_me = db.Column(

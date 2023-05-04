@@ -77,7 +77,7 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a href="{{ url_for('auth_bp.dashboard', user_id=current_user.id) }}"
+                            <a href="{{ url_for('main.dashboard', user_id=current_user.id) }}"
                                class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#home"/>
@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('auth_bp.dashboard', user_id=user.id) }}"
+                            <a href="{{ url_for('main.dashboard', user_id=user.id) }}"
                                class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#book"/>
@@ -95,7 +95,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('auth_bp.dashboard_comments', user_id=user.id) }}"
+                            <a href="{{ url_for('main.dashboard_comments', user_id=user.id) }}"
                                class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#thought"/>
@@ -104,7 +104,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('auth_bp.followers', user_id=user.id) }}" class="nav-link d-flex">
+                            <a href="{{ url_for('main.followers', user_id=user.id) }}" class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#people"/>
                                 </svg>
@@ -112,7 +112,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('auth_bp.following', user_id=user.id) }}" class="nav-link d-flex">
+                            <a href="{{ url_for('main.following', user_id=user.id) }}" class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#heart"/>
                                 </svg>
@@ -120,7 +120,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('main_bp.logout') }}" class="nav-link d-flex">
+                            <a href="{{ url_for('auth.logout') }}" class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#logout"/>
                                 </svg>
@@ -129,7 +129,7 @@
                         </li>
                         {% if user == current_user %}
                         <li class="nav-item">
-                            <a href="{{ url_for('main_bp.index') }}" class="nav-link d-flex">
+                            <a href="{{ url_for('main.index') }}" class="nav-link d-flex">
                                 <svg class="bi me-2" width="16" height="16">
                                     <use href="#gear"/>
                                 </svg>
@@ -168,7 +168,7 @@
                     {{ user.username }}'s Posts
                     {% if user == current_user %}
                     <h3 class="display-6 m-3 text-center">
-                        <a href="{{url_for('main_bp.create_post') }}" class="text-center text-quaternary-color">
+                        <a href="{{url_for('main.create_post') }}" class="text-center text-quaternary-color">
                             Create A New Post
                         </a>
                     </h3>
@@ -191,18 +191,18 @@
 
             </header>
             <div class="d-flex justify-content-center">
-                <p class="text-quaternary-color"> Last login: {{ moment(user.last_login).fromNow() }}</p>
+                <p class="text-quaternary-color"> Last seen: {{ moment(user.last_seen).fromNow() }}</p>
                 {% if not user == current_user %}
                 {% if not current_user.is_following(user) %}
                 <div class="">
-                    <form action="{{ url_for('auth_bp.follow', user_id=user.id) }}" method="post">
+                    <form action="{{ url_for('main.follow', user_id=user.id) }}" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='Follow me!') }}
                     </form>
                 </div>
                 {% else %}
                 <div class="">
-                    <form action="{{ url_for('auth_bp.unfollow', user_id=user.id) }}" method="post">
+                    <form action="{{ url_for('main.unfollow', user_id=user.id) }}" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='Unfollow me.') }}
                     </form>
@@ -216,7 +216,7 @@
         <div class="post-container text-quaternary-color mt-5 pt-5 text-center">
             {% for post in user_posts %}
             <div class="post align-items-start">
-                <a href="{{ url_for('main_bp.post', post_id=post.id) }}">
+                <a href="{{ url_for('main.post', post_id=post.id) }}">
                     <div class="post-image"
                          style="background-image: url({{ post.img_url }});">
                     </div>
@@ -225,10 +225,10 @@
                     <h5 class="card-title">{{ post.title }}</h5>
                     <p class="card-text m-3">{{ post.subtitle }}</p>
                     <p> created: {{ moment(post.created_on).format('LL') }}</p>
-                    <a href="{{ url_for('main_bp.post', post_id=post.id) }}" class="btn btn-secondary m-3">
+                    <a href="{{ url_for('main.post', post_id=post.id) }}" class="btn btn-secondary m-3">
                         Full Story
                     </a>
-                    <a href="{{ url_for('main_bp.edit_post', post_id=post.id) }}" class="btn btn-secondary m-3">
+                    <a href="{{ url_for('main.edit_post', post_id=post.id) }}" class="btn btn-secondary m-3">
                         Edit Post
                     </a>
                 </div>
@@ -243,7 +243,7 @@
                     <br>
                     <br>
                     {% for post in all_posts if post.id == comment.post_id %}
-                    <a href="{{ url_for('main_bp.post', post_id=post.id) }}"
+                    <a href="{{ url_for('main.post', post_id=post.id) }}"
                        class="text-decoration-none link-hover-opacity-75">
                         {{ post.title }}
                     </a>
@@ -269,19 +269,19 @@
                 {% for followed_user in followed_users %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('auth_bp.dashboard', user_id=followed_user.id) }}"
+                        <a href="{{ url_for('main.dashboard', user_id=followed_user.id) }}"
                            class="text-decoration-none">
                             {{ followed_user.username }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('auth_bp.followers', user_id=followed_user.id) }}"
+                        <a href="{{ url_for('main.followers', user_id=followed_user.id) }}"
                            class="text-decoration-none">
                             {{ followed_user.following_users().count() }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('auth_bp.following', user_id=followed_user.id) }}"
+                        <a href="{{ url_for('main.following', user_id=followed_user.id) }}"
                            class="text-decoration-none">
                             {{ followed_user.followed_users().count()}}
                         </a>
@@ -305,19 +305,19 @@
                 {% for follower in followers %}
                 <tr>
                     <td>
-                        <a href="{{ url_for('auth_bp.dashboard', user_id=follower.id) }}"
+                        <a href="{{ url_for('main.dashboard', user_id=follower.id) }}"
                            class="text-decoration-none">
                             {{ follower.username }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('auth_bp.followers', user_id=follower.id) }}"
+                        <a href="{{ url_for('main.followers', user_id=follower.id) }}"
                            class="text-decoration-none">
                             {{ follower.following_users().count() }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for('auth_bp.following', user_id=follower.id) }}"
+                        <a href="{{ url_for('main.following', user_id=follower.id) }}"
                            class="text-decoration-none">
                             {{ follower.followed_users().count() }}
                         </a>

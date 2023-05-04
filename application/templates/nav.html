@@ -1,7 +1,7 @@
 <!-- Nav -->
 <nav class="patterned navbar navbar-default navbar-expand-xl sticky-top navbar-light">
     <div class="container">
-        <a class="navbar-brand" href="{{url_for('main_bp.index')}}"><strong>IdeaGenie</strong>
+        <a class="navbar-brand" href="{{url_for('main.index')}}"><strong>IdeaGenie</strong>
             <span></span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -11,25 +11,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('main_bp.index')}}">Home</a>
+                    <a class="nav-link" href="{{url_for('main.index')}}">Home</a>
                 </li>
                 {% if not current_user.is_authenticated: %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('auth_bp.register')}}">Register</a>
+                    <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('auth_bp.login')}}">Login</a>
+                    <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('main_bp.logout')}}">Log Out</a>
+                    <a class="nav-link" href="{{url_for('auth.logout')}}">Log Out</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('auth_bp.dashboard', user_id=current_user.id)}}">Dashboard</a>
+                    <a class="nav-link" href="{{url_for('main.dashboard', user_id=current_user.id)}}">Dashboard</a>
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('main_bp.create_post')}}">Create Post</a>
+                    <a class="nav-link" href="{{url_for('main.create_post')}}">Create Post</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle theme-switch" href="#" role="button" data-bs-toggle="dropdown"

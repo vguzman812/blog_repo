@@ -10,6 +10,7 @@ from os import environ, path
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
 
+import config
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, '../.env'))
@@ -35,10 +36,10 @@ ckeditor = CKEditor()
 
 
 
-def init_app():
+def init_app(config_class=config.DevConfig):
 	"""Initialize the core application."""
 	app = Flask(__name__, instance_relative_config=False)
-	app.config.from_object('config.DevConfig')
+	app.config.from_object(config_class)
 
 	# Initialize Plugins
 	db.init_app(app)
@@ -51,12 +52,13 @@ def init_app():
 
 	with app.app_context():
 		# Include our Routes
-		from . import routes, auth
+		from . import main, auth, errors
 		from .assets import compile_static_assets
 
 		# Import blueprints
-		app.register_blueprint(routes.main_bp)
-		app.register_blueprint(auth.auth_bp)
+		app.register_blueprint(main.bp)
+		app.register_blueprint(auth.bp)
+		app.register_blueprint(errors.bp)
 
 		# Compile static assets
 		compile_static_assets(assets)

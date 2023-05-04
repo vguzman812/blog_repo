@@ -27,6 +27,7 @@ class Config:
     SESSION_REDIS = redis.from_url(REDIS_URI)
 
 
+
 class ProdConfig(Config):
     FLASK_ENV = 'production'
     DEBUG = False
