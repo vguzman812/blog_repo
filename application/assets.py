@@ -19,35 +19,35 @@ def compile_main_assets(assets):
 			filters='cssmin',
 			output='dist/css/bootstrap.css'
 		),
-		'css_main': Bundle(
-			'src/scss/main.scss',
-			filters=scss_filters,
-			output='dist/css/main.css',
-		),
 		'css_dashboard': Bundle(
 			'src/scss/dashboard.scss',
 			filters=scss_filters,
 			output='dist/css/dashboard.css',
-		),
-		'css_register': Bundle(
-			'src/scss/register.scss',
-			filters=scss_filters,
-			output='dist/css/register.css',
-		),
-		'css_login': Bundle(
-			'src/scss/login.scss',
-			filters=scss_filters,
-			output='dist/css/login.css',
 		),
 		'css_index': Bundle(
 			'src/scss/index.scss',
 			filters=scss_filters,
 			output='dist/css/index.css',
 		),
+		'css_login': Bundle(
+			'src/scss/login.scss',
+			filters=scss_filters,
+			output='dist/css/login.css',
+		),
+		'css_main': Bundle(
+			'src/scss/main.scss',
+			filters=scss_filters,
+			output='dist/css/main.css',
+		),
 		'css_post': Bundle(
 			'src/scss/post.scss',
 			filters=scss_filters,
 			output='dist/css/post.css',
+		),
+		'css_register': Bundle(
+			'src/scss/register.scss',
+			filters=scss_filters,
+			output='dist/css/register.css',
 		),
 		'js_bootstrap': Bundle(
 			'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
@@ -59,11 +59,6 @@ def compile_main_assets(assets):
 			filters=js_filters,
 			output='dist/js/dashboard.js'
 		),
-		'js_register': Bundle(
-			'src/js/register.js',
-			filters=js_filters,
-			output='dist/js/register.js'
-		),
 		'js_nav': Bundle(
 			'src/js/nav.js',
 			filters=js_filters,
@@ -73,6 +68,11 @@ def compile_main_assets(assets):
 			'src/js/post.js',
 			filters=js_filters,
 			output='dist/js/post.js'
+		),
+		'js_register': Bundle(
+			'src/js/register.js',
+			filters=js_filters,
+			output='dist/js/register.js'
 		),
 		'js_search': Bundle(
 			'src/js/search.js',

@@ -1,11 +1,13 @@
+from application import login_manager
+from application.models import db, User
+from application.auth import bp
+from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, logout_user, current_user, login_user
 from .forms import LoginForm, RegisterForm
-from application.models import db, User
-from application import login_manager
 from werkzeug.urls import url_parse
-from datetime import datetime
-from application.auth import bp
+
+
 @login_manager.user_loader
 def load_user(user_id):
 	"""Check if user is logged-in on every page load."""
@@ -92,6 +94,7 @@ def login():
 		'auth/login.html',
 		form=form,
 	)
+
 
 @bp.route('/logout')
 @login_required
