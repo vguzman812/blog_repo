@@ -1,8 +1,32 @@
+from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, SubmitField, PasswordField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired, URL, Email, EqualTo, Length
-from flask_ckeditor import CKEditorField
+
+
+class CommentForm(FlaskForm):
+	post_id = HiddenField()
+	comment_text = TextAreaField("Comment", validators=[
+		DataRequired(),
+	])
+	submit = SubmitField("Submit Comment")
+
+
+class ContactForm(FlaskForm):
+	"""Contact form."""
+	name = StringField('Name', validators=[
+		DataRequired(),
+	])
+	email = StringField('Email', validators=[
+		Email(message='Not a valid email address.'),
+		DataRequired(),
+	])
+	body = CKEditorField('Message', validators=[
+		DataRequired(),
+		Length(min=4, message='Your message is too short.'),
+	])
+	submit = SubmitField('Submit')
 
 
 # WTForms
@@ -20,37 +44,6 @@ class CreatePostForm(FlaskForm):
 		DataRequired(),
 	])
 	submit = SubmitField("Submit Post")
-
-
-class CommentForm(FlaskForm):
-	post_id = HiddenField()
-	comment_text = TextAreaField("Comment", validators=[
-		DataRequired(),
-	])
-	submit = SubmitField("Submit Comment")
-
-
-class UploadForm(FlaskForm):
-	upload = FileField('image', validators=[
-		FileRequired(),
-		FileAllowed(['jpg', 'png'], 'Images only!')
-	])
-
-
-class ContactForm(FlaskForm):
-	"""Contact form."""
-	name = StringField('Name', validators=[
-		DataRequired(),
-	])
-	email = StringField('Email', validators=[
-		Email(message='Not a valid email address.'),
-		DataRequired(),
-	])
-	body = CKEditorField('Message', validators=[
-		DataRequired(),
-		Length(min=4, message='Your message is too short.'),
-	])
-	submit = SubmitField('Submit')
 
 
 class EditProfileForm(FlaskForm):
@@ -77,3 +70,10 @@ class EditProfileForm(FlaskForm):
 
 class EmptyForm(FlaskForm):
 	submit = SubmitField('Submit')
+
+
+class UploadForm(FlaskForm):
+	upload = FileField('image', validators=[
+		FileRequired(),
+		FileAllowed(['jpg', 'png'], 'Images only!')
+	])

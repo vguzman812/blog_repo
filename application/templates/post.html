@@ -28,11 +28,11 @@
             </h5>
         </header>
         <div class="row justify-content-center my-3 pb-5">
-            <img class="col-9" src="{{ post.img_url }}" alt="">
+            <img class="col-9" src="{{ post.img_url }}" alt="" >
         </div>
         <div class="row text-start text-quaternary-color justify-content-center">
             <div class="col-10">
-                <p>posted: {{ moment(post.created_on).format('LL') }}</p>
+                <p>Posted: {{ moment(post.created_on).format('LL') }}</p>
                 <br>
                 {{ post.body|safe }}
             </div>

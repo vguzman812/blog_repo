@@ -5,16 +5,18 @@
 a {
     color: text-quaternary-color !important;
 }
-h5 {
-    font-weight: 700;
-}
+
 h1 {
     font-size: 1.5rem;
-        font-weight: 700;
-
+    font-weight: 700;
 }
-.article-container {
 
+h2 {
+    font-size: 1.1rem;
+    font-weight: 550;
+}
+h5 {
+    font-weight: 700;
 }
 
 .main-article-container {
@@ -23,13 +25,6 @@ h1 {
     background-size: cover;
 }
 
-.main-article {
-
-}
-
-
-.secondary-article {
-}
 
 .secondary-article-container {
     height: 60vh;
@@ -41,7 +36,6 @@ h1 {
     height: 60vh;
     background-position: center;
     background-size: cover;
-
 }
 
 .featured-article-container {

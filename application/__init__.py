@@ -1,15 +1,15 @@
+from dotenv import load_dotenv
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_bootstrap import Bootstrap5
-from flask_login import LoginManager
 from flask_assets import Environment
+from flask_bootstrap import Bootstrap5
+from flask_ckeditor import CKEditor
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_moment import Moment
-from sqlalchemy import MetaData
-from os import environ, path
-from dotenv import load_dotenv
-from flask_ckeditor import CKEditor
+from flask_sqlalchemy import SQLAlchemy
 from flask_whooshee import Whooshee
+from os import path
+from sqlalchemy import MetaData
 
 import config
 
@@ -28,12 +28,12 @@ metadata = MetaData(
 )
 
 # Globally accessible libraries
-db = SQLAlchemy(metadata=metadata)
 bootstrap = Bootstrap5()
+ckeditor = CKEditor()
+db = SQLAlchemy(metadata=metadata)
 login_manager = LoginManager()
 migrate = Migrate()
 moment = Moment()
-ckeditor = CKEditor()
 whooshee = Whooshee()
 
 
@@ -43,13 +43,13 @@ def init_app(config_class=config.DevConfig):
 	app.config.from_object(config_class)
 
 	# Initialize Plugins
-	db.init_app(app)
+	assets = Environment(app)
 	bootstrap.init_app(app)
+	ckeditor.init_app(app)
+	db.init_app(app)
 	login_manager.init_app(app)
 	moment.init_app(app)
-	ckeditor.init_app(app)
 	whooshee.init_app(app)
-	assets = Environment(app)
 
 	with app.app_context():
 		# Include our Routes
@@ -57,9 +57,9 @@ def init_app(config_class=config.DevConfig):
 		from .assets import compile_static_assets
 
 		# Import blueprints
-		app.register_blueprint(main.bp)
 		app.register_blueprint(auth.bp)
 		app.register_blueprint(errors.bp)
+		app.register_blueprint(main.bp)
 
 		# Compile static assets
 		compile_static_assets(assets)
