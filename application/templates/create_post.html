@@ -14,20 +14,21 @@
             <form method="POST"
                   class="container text-center text-quaternary-color shadow rounded p-3 bg-secondary-color w-100">
                 {% for message in get_flashed_messages() %}
-                <div class="mb-3">
-                    <p class="text-warning">{{ message }}</p>
+                <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 {% endfor %}
                 {{ form.csrf_token }}
                 {{ render_hidden_errors(form) }}
 
                 <div class="row mb-4 justify-content-center">
-                    <div class="col-6">{{ render_field(form.title, placeholder='The Title of Your Post') }}</div>
+                    <div class="col-6">{{ render_field(form.title, placeholder='The Title of Your Post. 100 character max') }}</div>
                 </div>
 
                 <div class="row mb-4 justify-content-center">
                     <div class="col-6">
-                        {{ render_field(form.subtitle, placeholder="A quick description of your post.") }}
+                        {{ render_field(form.subtitle, placeholder="A quick description of your post. 100 character max") }}
                     </div>
                 </div>
 

@@ -33,39 +33,22 @@ class ContactForm(FlaskForm):
 class CreatePostForm(FlaskForm):
 	title = StringField("Blog Post Title", validators=[
 		DataRequired(),
+		Length(min=5, max=100, message='Title must be between 5-100 characters'),
 	])
 	subtitle = StringField("Subtitle", validators=[
 		DataRequired(),
+		Length(min=5, max=100, message='Title must be between 5-100 characters'),
 	])
 	img_url = StringField("Blog Image URL", validators=[
-		DataRequired(), URL(),
+		DataRequired(),
+		URL(),
+		Length(max=250, message='URL must be less than 250 characters long. Choose a different URL.')
 	])
 	body = CKEditorField("Blog Content", validators=[
 		DataRequired(),
 	])
 	submit = SubmitField("Submit Post")
 
-
-class EditProfileForm(FlaskForm):
-	new_username = StringField("Username", validators=[
-		DataRequired(),
-	])
-	new_email = StringField("Email", validators=[
-		DataRequired(),
-		Email(message="Not a valid email address.")
-	])
-	new_password = PasswordField("Password", validators=[
-		DataRequired(),
-		Length(min=6, message="Minimum length is 6 characters"),
-	])
-	confirm_password = PasswordField("Confirm Password", validators=[
-		DataRequired(),
-		EqualTo('password', message="Passwords must match.")
-	])
-	about_me = TextAreaField('About me', validators=[
-		Length(min=0, max=280),
-	])
-	submit = SubmitField("Sign Me Up!")
 
 
 class EmptyForm(FlaskForm):

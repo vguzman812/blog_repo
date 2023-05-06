@@ -11,6 +11,12 @@
 <body class="text-center bg-primary-color">
 {% include 'nav.html' %}
 <div class="banner d-flex flex-column">
+     {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
     <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
          style="background-image: url({{ all_posts[6].img_url }});">
         <article class="container">

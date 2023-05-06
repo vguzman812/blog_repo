@@ -16,6 +16,12 @@
 
 <div class="">
     <article class="container">
+         {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         <header class="row text-center text-quaternary-color mt-5">
             <h1 class="">
                 {{post.title}}
@@ -57,11 +63,6 @@
                     <img src="{{ current_user.avatar(50) }}" class="rounded-circle me-2">
                     <form method="POST"
                           class="container text-center text-quaternary-color p-3 mb-5 shadow">
-                        {% for message in get_flashed_messages() %}
-                        <div class="mb-3">
-                            <p class="text-warning">{{ message }}</p>
-                        </div>
-                        {% endfor %}
                         {{ form.csrf_token }}
                         {{ render_hidden_errors(form) }}
                         {{ form.post_id(value=post.id) }}
