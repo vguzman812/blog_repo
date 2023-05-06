@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3699039eedba1ee180bb5e99ec049c5bdee19a82a7b47864649ad9de51032114"
+            "sha256": "1147ca6efbe30805bf102e50209027fc9ca368f55b35728c2467dff550e1469b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -380,22 +380,6 @@
             "index": "pypi",
             "version": "==2.7.0"
         },
-        "elastic-transport": {
-            "hashes": [
-                "sha256:19db271ab79c9f70f8c43f8f5b5111408781a6176b54ab2e54d713b6d9ceb815",
-                "sha256:b9ad708ceb7fcdbc6b30a96f886609a109f042c0b9d9f2e44403b3133ba7ff10"
-            ],
-            "index": "pypi",
-            "version": "==8.4.0"
-        },
-        "elasticsearch": {
-            "hashes": [
-                "sha256:1849356db4192fbb75b2b8f3d55edb0fb07f8d855f386b318a7889222b49591f",
-                "sha256:a06482f4c338ab6ace5cf89ee351cf3ee1854083f29a3b875433e608424fb48c"
-            ],
-            "index": "pypi",
-            "version": "==8.7.0"
-        },
         "email-validator": {
             "hashes": [
                 "sha256:49a72f5fa6ed26be1c964f0567d931d10bf3fdeeacdf97bc26ef1cd2a44e0bda",
@@ -442,6 +426,13 @@
             ],
             "index": "pypi",
             "version": "==0.6.2"
+        },
+        "flask-mail": {
+            "hashes": [
+                "sha256:22e5eb9a940bf407bcf30410ecc3708f3c56cc44b29c34e1726fe85006935f41"
+            ],
+            "index": "pypi",
+            "version": "==0.9.1"
         },
         "flask-migrate": {
             "hashes": [
@@ -745,6 +736,14 @@
             ],
             "index": "pypi",
             "version": "==2.21"
+        },
+        "pyjwt": {
+            "hashes": [
+                "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd",
+                "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"
+            ],
+            "index": "pypi",
+            "version": "==2.6.0"
         },
         "pymysql": {
             "hashes": [
