@@ -1,7 +1,7 @@
 from application import login_manager
 from application.models import db, User
 from application.auth import bp
-from application.auth.email import send_password_reset_email
+from application.auth.email import send_password_reset_email, send_verification_email
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, logout_user, current_user, login_user
@@ -27,9 +27,6 @@ def unauthorized():
 @bp.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_user(user_id):
-	"""
-	Edit page for user info. User can edit username, email, password, and about me.
-	"""
 	user = User.query.get_or_404(user_id)
 	if current_user.id != user.id:
 		return redirect(url_for('main.dashboard', user_id=current_user.id))
@@ -51,10 +48,8 @@ def edit_user(user_id):
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
 		# Update the user's data if all validation checks pass
-		if form.new_username.data != user.username:
-			user.username = form.new_username.data
-		if form.new_email.data != user.email:
-			user.email = form.new_email.data
+		user.username = form.new_username.data
+		user.email = form.new_email.data
 		if form.new_password.data:
 			user.set_password(form.new_password.data)
 		if form.about_me.data != user.about_me:
@@ -65,11 +60,7 @@ def edit_user(user_id):
 		flash('Profile successfully edited.')
 		return redirect(url_for("main.dashboard", user_id=current_user.id))
 
-	return render_template(
-		'auth/edit_profile.html',
-		form=form,
-		user=current_user,
-	)
+	return render_template('auth/edit_profile.html', form=form, user=current_user)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -139,13 +130,16 @@ def register():
 				email=form.email.data,
 				created_on=datetime.now(),
 				last_seen=datetime.now(),
+				verified=False,
 			)
 			user.set_password(form.password.data)
 			db.session.add(user)
 			db.session.commit()  # Create new user
 			login_user(user)  # Log in as newly created user
 			flash('Successfully Registered!')
-			return redirect(url_for('main.dashboard', user_id=current_user.id))
+			send_verification_email(user)
+			flash('Please verify your email address for posting privileges. Check your email for a verification link.')
+			return redirect(url_for('main.index'))
 	return render_template(
 		'auth/register.html',
 		form=form,
@@ -178,10 +172,27 @@ def reset_password_request():
 		user = User.query.filter_by(email=form.email.data).first()
 		if user:
 			send_password_reset_email(user)
-		flash('Instructions have been sent to the email provided. Check your email for the instructions to reset your password')
+		flash(
+			'Instructions have been sent to the email provided. Check your email for the instructions to reset your password')
 		return redirect(url_for('auth.login'))
 	return render_template(
 		'auth/reset_password_request.html',
 		title='Reset Password',
 		form=form,
 	)
+
+
+@bp.route('/verify/<token>', methods=["GET", "POST"])
+def verify_email(token):
+	if current_user.verified:
+		flash('Your account is already verified.')
+		return redirect(url_for('main.index'))
+	user = User.verify_verification_token(token)
+	if not user:
+		flash('Incorrect token')
+		return redirect(url_for('main.index'))
+	user.verified = True
+	db.session.commit()
+	flash('Account successfully verified')
+	logout_user()
+	return redirect(url_for('auth.login'))

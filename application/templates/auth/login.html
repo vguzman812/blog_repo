@@ -14,7 +14,7 @@
 {% from 'bootstrap5/form.html' import render_field, render_hidden_errors %}
 <div class="wrapper d-flex flex-column container">
     <div class="container p-5 rounded">
-        <h1 class="text-center pb-3 text-quaternary-color"> This is where the magic begins!</h1>
+        <h1 class="text-center pb-3 text-quaternary-color">Log in below!</h1>
     </div>
 
 
@@ -38,8 +38,8 @@
             </div>
         </div>
         <p class="my-3">
-            Forgot Your Password?
-            <a href="{{ url_for('auth.reset_password_request') }}">Click to Reset It</a>
+            Forgot your password?
+            <a href="{{ url_for('auth.reset_password_request') }}">Reset It</a>
         </p>
 
         <div class="row justify-content-center">
@@ -50,8 +50,8 @@
 
     <div class="">
         <div class="text-quaternary-color">
-            <span class="row m-3 justify-content-center">Already have an account?</span>
-            <a class="row mb-3 justify-content-center" href="{{ url_for('auth.login') }}">Log In Here</a>
+            <span class="row m-3 justify-content-center">Don't have an account yet?</span>
+            <a class="row mb-3 justify-content-center" href="{{ url_for('auth.register') }}">Register Here</a>
         </div>
 
     </div>
