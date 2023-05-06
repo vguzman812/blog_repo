@@ -1,8 +1,11 @@
 from . import db, whooshee
 from datetime import datetime
+from flask import current_app
 from flask_login import UserMixin
 from hashlib import md5
+import jwt
 from sqlalchemy.orm import relationship
+from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Followers association Table
@@ -141,18 +144,6 @@ class User(UserMixin, db.Model):
 		lazy='dynamic',
 	)
 
-	def set_password(self, password):
-		"""Create hashed password."""
-		self.password = generate_password_hash(
-			password,
-			method='pbkdf2:sha256',
-			salt_length=8
-		)
-
-	def check_password(self, password):
-		"""Check hashed password."""
-		return check_password_hash(self.password, password)
-
 	def avatar(self, size):
 		digest = md5(self.email.lower().encode('utf-8')).hexdigest()
 		return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
@@ -160,16 +151,13 @@ class User(UserMixin, db.Model):
 			size,
 		)
 
+	def check_password(self, password):
+		"""Check hashed password."""
+		return check_password_hash(self.password, password)
+
 	def follow(self, user):
 		if not self.is_following(user):
 			self.followed.append(user)
-
-	def unfollow(self, user):
-		if self.is_following(user):
-			self.followed.remove(user)
-
-	def is_following(self, user):
-		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
 	def followed_users(self):
 		return User.query.join(
@@ -186,6 +174,42 @@ class User(UserMixin, db.Model):
 		).filter(
 			followers.c.followed_id == self.id
 		)
+
+	def get_reset_password_token(self, expires_in=600):
+		return jwt.encode(
+			{
+				'reset_password': self.id,
+				'exp': time() + expires_in
+			},
+			current_app.config['SECRET_KEY'],
+			algorithm='HS256')
+
+	def is_following(self, user):
+		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
+	def set_password(self, password):
+		"""Create hashed password."""
+		self.password = generate_password_hash(
+			password,
+			method='pbkdf2:sha256',
+			salt_length=8
+		)
+
+	def unfollow(self, user):
+		if self.is_following(user):
+			self.followed.remove(user)
+
+	@staticmethod
+	def verify_reset_password_token(token):
+		try:
+			id = jwt.decode(
+				token,
+				current_app.config['SECRET_KEY'],
+				algorithms=['HS256'],
+			)['reset_password']
+		except:
+			return
+		return User.query.get(id)
 
 	def __repr__(self):
 		return '<User {}>'.format(self.username)

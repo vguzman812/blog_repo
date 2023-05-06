@@ -4,6 +4,7 @@ from flask_assets import Environment
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -32,6 +33,7 @@ bootstrap = Bootstrap5()
 ckeditor = CKEditor()
 db = SQLAlchemy(metadata=metadata)
 login_manager = LoginManager()
+mail = Mail()
 migrate = Migrate()
 moment = Moment()
 whooshee = Whooshee()
@@ -48,6 +50,7 @@ def init_app(config_class=config.DevConfig):
 	ckeditor.init_app(app)
 	db.init_app(app)
 	login_manager.init_app(app)
+	mail.init_app(app)
 	moment.init_app(app)
 	whooshee.init_app(app)
 

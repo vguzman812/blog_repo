@@ -50,3 +50,22 @@ class RegisterForm(FlaskForm):
 		EqualTo('password', message="Passwords must match.")
 	])
 	submit = SubmitField("Sign Me Up!")
+
+
+class ResetPasswordForm(FlaskForm):
+	password = PasswordField('New Password', validators=[
+		DataRequired(),
+	])
+	password2 = PasswordField('Confirm New Password', validators=[
+		DataRequired(),
+		EqualTo('password'),
+	])
+	submit = SubmitField('Reset my password')
+
+
+class ResetPasswordRequestForm(FlaskForm):
+	email = StringField('Email', validators=[
+		DataRequired(),
+		Email(),
+	])
+	submit = SubmitField('Request password reset')

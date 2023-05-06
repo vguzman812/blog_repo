@@ -26,6 +26,12 @@ class Config:
     SESSION_TYPE = "redis"
     SESSION_REDIS = redis.from_url(REDIS_URI)
 
+    # Flask-Mail
+    MAIL_SERVER = environ.get('MAIL_SERVER')
+    MAIL_PORT = environ.get('MAIL_PORT')
+    MAIL_USERNAME = environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
+    MAIL_USE_SSL = environ.get('MAIL_USE_SSL')
 
 
 class ProdConfig(Config):

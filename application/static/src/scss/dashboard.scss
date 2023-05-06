@@ -11,7 +11,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(autofit, 1fr);
-    gap: 5%
+    gap: 15% 5%;
 }
 
 .post {
