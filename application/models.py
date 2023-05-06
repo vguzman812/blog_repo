@@ -124,6 +124,9 @@ class User(UserMixin, db.Model):
 	about_me = db.Column(
 		db.String(280),
 	)
+	verified = db.Column(
+		db.Boolean,
+	)
 	posts = relationship(
 		"BlogPost",
 		backref="author",
@@ -184,6 +187,15 @@ class User(UserMixin, db.Model):
 			current_app.config['SECRET_KEY'],
 			algorithm='HS256')
 
+	def get_verification_token(self, expires_in=600):
+		return jwt.encode(
+			{
+				'verify_email': self.id,
+				'exp': time() + expires_in
+			},
+			current_app.config['SECRET_KEY'],
+			algorithm='HS256')
+
 	def is_following(self, user):
 		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
@@ -207,6 +219,17 @@ class User(UserMixin, db.Model):
 				current_app.config['SECRET_KEY'],
 				algorithms=['HS256'],
 			)['reset_password']
+		except:
+			return
+		return User.query.get(id)
+	@staticmethod
+	def verify_verification_token(token):
+		try:
+			id = jwt.decode(
+				token,
+				current_app.config['SECRET_KEY'],
+				algorithms=['HS256'],
+			)['verify_email']
 		except:
 			return
 		return User.query.get(id)
