@@ -29,10 +29,11 @@
 
     <form method="POST" class="form-container container text-center text-quaternary-color shadow rounded p-3">
         {% for message in get_flashed_messages() %}
-        <div class="mb-3">
-            <p class="text-warning">{{ message }}</p>
-        </div>
-        {% endfor %}
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
         {{ form.csrf_token }}
         {{ render_hidden_errors(form) }}
 

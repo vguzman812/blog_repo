@@ -16,12 +16,48 @@ def before_request():
 		db.session.commit()
 
 
+# Create Post Route
+@bp.route('/create_post', methods=["GET", "POST"])
+@login_required
+def create_post():
+	"""
+		Page for creating posts for registered users
+
+		GET requests serve creation form.
+		POST requests validate and commits new post to database.
+	"""
+	form = CreatePostForm()
+	if form.validate_on_submit():
+		existing_post_by_title = BlogPost.query.filter_by(title=form.title.data).first()
+		if existing_post_by_title:
+			flash('There is already a post with that title. Please change the title.')
+		if existing_post_by_title is None:
+			new_post = BlogPost(
+				title=form.title.data,
+				subtitle=form.subtitle.data,
+				body=form.body.data,
+				img_url=form.img_url.data,
+				author=current_user,
+				author_id=current_user.id,
+				created_on=dt.utcnow(),
+			)
+			db.session.add(new_post)
+			db.session.commit()
+			reindex_search()
+			return redirect(url_for("main.post", post_id=new_post.id))
+	return render_template(
+		"create_post.html",
+		form=form,
+		current_user=current_user,
+	)
+
+
 # Render user dashboard with posts
 @bp.route('/dashboard/user/<int:user_id>', methods=['GET'])
 @login_required
 def dashboard(user_id):
-	form = EmptyForm()
 	"""Logged in user dashboard."""
+	form = EmptyForm()
 	user = User.query.get_or_404(user_id)
 	user_posts = BlogPost.query.filter_by(author_id=user_id).all()
 	return render_template(
@@ -40,7 +76,13 @@ def dashboard_comments(user_id):
 	form = EmptyForm()
 	user = User.query.get_or_404(user_id)
 	all_posts = BlogPost.query.all()
-	user_comments = Comment.query.filter_by(author_id=user_id).all()
+	if current_user.id == user_id:
+		user_comments = Comment.query.filter_by(author_id=user_id).all()
+	else:
+		user_comments = db.session.query(Comment, BlogPost). \
+			join(BlogPost, Comment.post_id == BlogPost.id). \
+			filter(Comment.author_id == user_id). \
+			all()
 	return render_template(
 		'dashboard.html',
 		user_comments=user_comments,
@@ -51,17 +93,59 @@ def dashboard_comments(user_id):
 
 
 # Render user edit_profile page
-@bp.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
+
+
+# Delete comment route
+@bp.route('/delete_comment/<int:comment_id>', methods=['GET'])
 @login_required
-def dashboard_edit(user_id):
-	"""
-	Edit page for user info. User can edit username, email, password, and about me.
-	:param user_id:
-	:return:
-	"""
-	return render_template(
-		'dashboard.html',
+def delete_comment(comment_id):
+	comment = Comment.query.get_or_404(comment_id)
+	if comment.author_id != current_user.id:
+		return redirect(url_for('main.post', post_id=comment.post_id))
+	else:
+		db.session.delete(comment)
+		db.session.commit()
+		flash('Comment successfully deleted!')
+	return redirect(url_for('main.dashboard_comments', user_id=current_user.id))
+
+
+# Delete post route
+@bp.route('/delete_post/<int:post_id>', methods=['GET'])
+@login_required
+def delete_post(post_id):
+	post = BlogPost.query.get_or_404(post_id)
+	if not post.author_id == current_user.id:
+		return redirect(url_for('main.post', post_id=post.post_id))
+	else:
+		db.session.delete(post)
+		db.session.commit()
+		flash('Post successfully deleted')
+	return redirect(url_for('main.dashboard', user_id=current_user.id))
+
+
+# Edit post route
+@bp.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@login_required
+def edit_post(post_id):
+	post = BlogPost.query.get_or_404(post_id)
+	form = CreatePostForm(
+		title=post.title,
+		subtitle=post.subtitle,
+		img_url=post.img_url,
+		body=post.body
 	)
+	if form.validate_on_submit():
+		post.title = form.title.data
+		post.subtitle = form.subtitle.data
+		post.img_url = form.img_url.data
+		post.body = form.body.data
+
+		db.session.commit()
+		reindex_search()
+		flash('Post successfully edited.')
+		return redirect(url_for("main.post", post_id=post.id))
+
+	return render_template("create_post.html", form=form, current_user=current_user)
 
 
 # Follow user route
@@ -79,49 +163,10 @@ def follow(user_id):
 			return redirect(url_for('main.dashboard', user_id=user_id))
 		current_user.follow(user)
 		db.session.commit()
-		flash('You are following user {}!'.format(user_id))
+		flash('You are now following user {}!'.format(user_id))
 		return redirect(url_for('main.dashboard', user_id=user_id))
 	else:
 		return redirect(url_for('main.index'))
-
-
-# Unfollow user route
-@bp.route('/unfollow/<int:user_id>', methods=['POST'])
-@login_required
-def unfollow(user_id):
-	form = EmptyForm()
-	if form.validate_on_submit():
-		user = User.query.filter_by(id=user_id).first()
-		if user is None:
-			flash('User {} not found.'.format(user_id))
-			return redirect(url_for('main.index'))
-		if user == current_user:
-			flash('You cannot unfollow yourself!')
-			return redirect(url_for('main.dashboard', user_id=user_id))
-		current_user.unfollow(user)
-		db.session.commit()
-		flash('You are not following {}.'.format(user_id))
-		return redirect(url_for('main.dashboard', user_id=user_id))
-	else:
-		return redirect(url_for('main.index'))
-
-
-# Render user following dashboard page
-@bp.route('/dashboard/user/<int:user_id>/following', methods=['GET'])
-@login_required
-def following(user_id):
-	"""Logged in user dashboard."""
-	form = EmptyForm()
-	user = User.query.get_or_404(user_id)
-	followed_users = user.followed_users().all()
-	print(followed_users)
-
-	return render_template(
-		'dashboard.html',
-		user=user,
-		followed_users=followed_users,
-		form=form,
-	)
 
 
 # Render user followers dashboard page
@@ -138,6 +183,24 @@ def followers(user_id):
 		'dashboard.html',
 		user=user,
 		followers=following_users,
+		form=form,
+	)
+
+
+# Render user following dashboard page
+@bp.route('/dashboard/user/<int:user_id>/following', methods=['GET'])
+@login_required
+def following(user_id):
+	"""Logged in user dashboard."""
+	form = EmptyForm()
+	user = User.query.get_or_404(user_id)
+	followed_users = user.followed_users().all()
+	print(followed_users)
+
+	return render_template(
+		'dashboard.html',
+		user=user,
+		followed_users=followed_users,
 		form=form,
 	)
 
@@ -173,7 +236,6 @@ def post(post_id):
 
 	if form.validate_on_submit():
 		if not current_user.is_authenticated:
-			flash("You need to login to comment.")
 			return redirect(url_for("main.post", post_id=post_id))
 
 		new_comment = Comment(
@@ -195,90 +257,6 @@ def post(post_id):
 	)
 
 
-# Create Post Route
-@bp.route('/create_post', methods=["GET", "POST"])
-@login_required
-def create_post():
-	"""
-		Page for creating posts for registered users
-
-		GET requests serve creation form.
-		POST requests validate and commits new post to database.
-	"""
-	form = CreatePostForm()
-	if form.validate_on_submit():
-		flash('Post successfully created')
-		new_post = BlogPost(
-			title=form.title.data,
-			subtitle=form.subtitle.data,
-			body=form.body.data,
-			img_url=form.img_url.data,
-			author=current_user,
-			author_id=current_user.id,
-			created_on=dt.utcnow(),
-		)
-		db.session.add(new_post)
-		db.session.commit()
-		reindex_search()
-		return redirect(url_for("main.post", post_id=new_post.id))
-	return render_template(
-		"create_post.html",
-		form=form,
-		current_user=current_user,
-	)
-
-
-# Edit post route
-@bp.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
-@login_required
-def edit_post(post_id):
-	post = BlogPost.query.get_or_404(post_id)
-	form = CreatePostForm(
-		title=post.title,
-		subtitle=post.subtitle,
-		img_url=post.img_url,
-		body=post.body
-	)
-	if form.validate_on_submit():
-		flash('Post successfully edited.')
-		post.title = form.title.data
-		post.subtitle = form.subtitle.data
-		post.img_url = form.img_url.data
-		post.body = form.body.data
-
-		db.session.commit()
-		reindex_search()
-		return redirect(url_for("main.post", post_id=post.id))
-
-	return render_template("create_post.html", form=form, current_user=current_user)
-
-
-# Delete comment route
-@bp.route('/delete_comment/<int:comment_id>', methods=['GET'])
-@login_required
-def delete_comment(comment_id):
-	comment = Comment.query.get_or_404(comment_id)
-	if not comment.author_id == current_user.id:
-		return redirect(url_for('main.post', post_id=comment.post_id))
-	else:
-		db.session.delete(comment)
-		db.session.commit()
-	return redirect(url_for('main.post', post_id=comment.post_id))
-
-
-# Delete post route
-@bp.route('/delete_post/<int:post_id>', methods=['GET'])
-@login_required
-def delete_post(post_id):
-	post = BlogPost.query.get_or_404(post_id)
-	if not post.author_id == current_user.id:
-		return redirect(url_for('main.post', post_id=post.post_id))
-	else:
-		db.session.delete(post)
-		db.session.commit()
-	return redirect(url_for('main.dashboard', user_id=current_user.id))
-
-
 # Search bar route
 @bp.route('/search/<keyword>')
 def search(keyword):
@@ -291,3 +269,24 @@ def search(keyword):
 		} for result in search_results
 	]
 	return jsonify(results)
+
+
+# Unfollow user route
+@bp.route('/unfollow/<int:user_id>', methods=['POST'])
+@login_required
+def unfollow(user_id):
+	form = EmptyForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(id=user_id).first()
+		if user is None:
+			flash('User {} not found.'.format(user_id))
+			return redirect(url_for('main.index'))
+		if user == current_user:
+			flash('You cannot unfollow yourself!')
+			return redirect(url_for('main.dashboard', user_id=user_id))
+		current_user.unfollow(user)
+		db.session.commit()
+		flash('You are no longer following {}.'.format(user_id))
+		return redirect(url_for('main.dashboard', user_id=user_id))
+	else:
+		return redirect(url_for('main.index'))
