@@ -1,7 +1,8 @@
 from application import login_manager
-from application.models import db, User
 from application.auth import bp
 from application.auth.email import send_password_reset_email, send_verification_email
+from application.models import db, User
+from application.route_constants import LOGIN_ROUTE, INDEX_ROUTE, DASH_ROUTE
 from datetime import datetime
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, logout_user, current_user, login_user
@@ -21,7 +22,7 @@ def load_user(user_id):
 def unauthorized():
 	"""Redirect unauthorized users to Login page."""
 	flash('You must be logged in to view that page.')
-	return redirect(url_for('auth.login'))
+	return redirect(url_for(LOGIN_ROUTE))
 
 
 @bp.route('/dashboard/user/<int:user_id>/edit', methods=['GET', 'POST'])
@@ -29,7 +30,7 @@ def unauthorized():
 def edit_user(user_id):
 	user = User.query.get_or_404(user_id)
 	if current_user.id != user.id:
-		return redirect(url_for('main.dashboard', user_id=current_user.id))
+		return redirect(url_for(DASH_ROUTE, user_id=current_user.id))
 	form = EditProfileForm(
 		new_username=user.username,
 		new_email=user.email,
@@ -37,13 +38,11 @@ def edit_user(user_id):
 	)
 	if form.validate_on_submit():
 		# Check if the new username and email are different from the current ones
-		if (form.new_username.data != user.username and
-				User.query.filter_by(username=form.new_username.data).first()):
+		if form.new_username.data != user.username and User.query.filter_by(username=form.new_username.data).first():
 			flash('Username is already taken.')
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
-		if (form.new_email.data != user.email and
-				User.query.filter_by(email=form.new_email.data).first()):
+		if form.new_email.data != user.email and User.query.filter_by(email=form.new_email.data).first():
 			flash('Email is already taken.')
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
@@ -58,7 +57,7 @@ def edit_user(user_id):
 		db.session.commit()
 
 		flash('Profile successfully edited.')
-		return redirect(url_for("main.dashboard", user_id=current_user.id))
+		return redirect(url_for(DASH_ROUTE, user_id=current_user.id))
 
 	return render_template('auth/edit_profile.html', form=form, user=current_user)
 
@@ -74,7 +73,7 @@ def login():
 	# Bypass if user is logged in
 	if current_user.is_authenticated:
 		flash('You are already logged in.')
-		return redirect(url_for('main.dashboard', user_id=current_user.id))
+		return redirect(url_for(DASH_ROUTE, user_id=current_user.id))
 	form = LoginForm()
 	# Validate login attempt
 	if form.validate_on_submit():
@@ -86,10 +85,10 @@ def login():
 			db.session.commit()
 			next_page = request.args.get('next')
 			if not next_page or url_parse(next_page).netloc != '':
-				next_page = url_for('main.index')
+				next_page = url_for(INDEX_ROUTE)
 			return redirect(next_page)
 		flash('Invalid email/password combination')
-		return redirect(url_for('auth.login'))
+		return redirect(url_for(LOGIN_ROUTE))
 	return render_template(
 		'auth/login.html',
 		form=form,
@@ -100,7 +99,7 @@ def login():
 @login_required
 def logout():
 	logout_user()
-	return redirect(url_for('main.index'))
+	return redirect(url_for(INDEX_ROUTE))
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -114,7 +113,7 @@ def register():
 	# Bypass if user is logged in
 	if current_user.is_authenticated:
 		flash('Log out first to register a new account.')
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 
 	form = RegisterForm()
 	if form.validate_on_submit():
@@ -139,7 +138,7 @@ def register():
 			flash('Successfully Registered!')
 			send_verification_email(user)
 			flash('Please verify your email address for posting privileges. Check your email for a verification link.')
-			return redirect(url_for('main.index'))
+			return redirect(url_for(INDEX_ROUTE))
 	return render_template(
 		'auth/register.html',
 		form=form,
@@ -149,24 +148,24 @@ def register():
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
 	if current_user.is_authenticated:
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 	user = User.verify_reset_password_token(token)
 	if not user:
 		flash('Incorrect token')
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 	form = ResetPasswordForm()
 	if form.validate_on_submit():
 		user.set_password(form.password.data)
 		db.session.commit()
 		flash('Your password has been reset.')
-		return redirect(url_for('auth.login'))
+		return redirect(url_for(LOGIN_ROUTE))
 	return render_template('auth/reset_password.html', form=form)
 
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
 	if current_user.is_authenticated:
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 	form = ResetPasswordRequestForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
@@ -174,7 +173,7 @@ def reset_password_request():
 			send_password_reset_email(user)
 		flash(
 			'Instructions have been sent to the email provided. Check your email for the instructions to reset your password')
-		return redirect(url_for('auth.login'))
+		return redirect(url_for(LOGIN_ROUTE))
 	return render_template(
 		'auth/reset_password_request.html',
 		title='Reset Password',
@@ -186,13 +185,13 @@ def reset_password_request():
 def verify_email(token):
 	if current_user.verified:
 		flash('Your account is already verified.')
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 	user = User.verify_verification_token(token)
 	if not user:
 		flash('Incorrect token')
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 	user.verified = True
 	db.session.commit()
 	flash('Account successfully verified')
 	logout_user()
-	return redirect(url_for('auth.login'))
+	return redirect(url_for(LOGIN_ROUTE))

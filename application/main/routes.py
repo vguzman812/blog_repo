@@ -2,6 +2,7 @@
 from .forms import CommentForm, CreatePostForm, EmptyForm
 from application.main import bp
 from application.models import db, User, BlogPost, Comment
+from application.route_constants import INDEX_ROUTE, DASH_ROUTE, POST_ROUTE
 from application.search import reindex_search
 from datetime import datetime as dt
 from flask import render_template, redirect, url_for, flash, request, jsonify
@@ -44,7 +45,7 @@ def create_post():
 			db.session.add(new_post)
 			db.session.commit()
 			reindex_search()
-			return redirect(url_for("main.post", post_id=new_post.id))
+			return redirect(url_for(POST_ROUTE, post_id=new_post.id))
 	return render_template(
 		"create_post.html",
 		form=form,
@@ -101,7 +102,7 @@ def dashboard_comments(user_id):
 def delete_comment(comment_id):
 	comment = Comment.query.get_or_404(comment_id)
 	if comment.author_id != current_user.id:
-		return redirect(url_for('main.post', post_id=comment.post_id))
+		return redirect(url_for(POST_ROUTE, post_id=comment.post_id))
 	else:
 		db.session.delete(comment)
 		db.session.commit()
@@ -113,37 +114,37 @@ def delete_comment(comment_id):
 @bp.route('/delete_post/<int:post_id>', methods=['GET'])
 @login_required
 def delete_post(post_id):
-	post = BlogPost.query.get_or_404(post_id)
-	if not post.author_id == current_user.id:
-		return redirect(url_for('main.post', post_id=post.post_id))
+	blog_post = BlogPost.query.get_or_404(post_id)
+	if blog_post.author_id != current_user.id:
+		return redirect(url_for(POST_ROUTE, post_id=blog_post.post_id))
 	else:
-		db.session.delete(post)
+		db.session.delete(blog_post)
 		db.session.commit()
 		flash('Post successfully deleted')
-	return redirect(url_for('main.dashboard', user_id=current_user.id))
+	return redirect(url_for(DASH_ROUTE, user_id=current_user.id))
 
 
 # Edit post route
 @bp.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @login_required
 def edit_post(post_id):
-	post = BlogPost.query.get_or_404(post_id)
+	blog_post = BlogPost.query.get_or_404(post_id)
 	form = CreatePostForm(
-		title=post.title,
-		subtitle=post.subtitle,
-		img_url=post.img_url,
-		body=post.body
+		title=blog_post.title,
+		subtitle=blog_post.subtitle,
+		img_url=blog_post.img_url,
+		body=blog_post.body
 	)
 	if form.validate_on_submit():
-		post.title = form.title.data
-		post.subtitle = form.subtitle.data
-		post.img_url = form.img_url.data
-		post.body = form.body.data
+		blog_post.title = form.title.data
+		blog_post.subtitle = form.subtitle.data
+		blog_post.img_url = form.img_url.data
+		blog_post.body = form.body.data
 
 		db.session.commit()
 		reindex_search()
 		flash('Post successfully edited.')
-		return redirect(url_for("main.post", post_id=post.id))
+		return redirect(url_for(POST_ROUTE, post_id=blog_post.id))
 
 	return render_template("create_post.html", form=form, current_user=current_user)
 
@@ -157,16 +158,16 @@ def follow(user_id):
 		user = User.query.filter_by(id=user_id).first()
 		if user is None:
 			flash('User {} not found.'.format(user_id))
-			return redirect(url_for('main.index'))
+			return redirect(url_for(INDEX_ROUTE))
 		if user == current_user:
 			flash('You cannot follow yourself!')
-			return redirect(url_for('main.dashboard', user_id=user_id))
+			return redirect(url_for(DASH_ROUTE, user_id=user_id))
 		current_user.follow(user)
 		db.session.commit()
 		flash('You are now following user {}!'.format(user_id))
-		return redirect(url_for('main.dashboard', user_id=user_id))
+		return redirect(url_for(DASH_ROUTE, user_id=user_id))
 	else:
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
 
 
 # Render user followers dashboard page
@@ -236,7 +237,7 @@ def post(post_id):
 
 	if form.validate_on_submit():
 		if not current_user.is_authenticated:
-			return redirect(url_for("main.post", post_id=post_id))
+			return redirect(url_for(POST_ROUTE, post_id=post_id))
 
 		new_comment = Comment(
 			text=form.comment_text.data,
@@ -246,7 +247,7 @@ def post(post_id):
 		)
 		db.session.add(new_comment)
 		db.session.commit()
-		return redirect(url_for('main.post', post_id=post_id))
+		return redirect(url_for(POST_ROUTE, post_id=post_id))
 
 	return render_template(
 		"post.html",
@@ -265,7 +266,7 @@ def search(keyword):
 		{
 			"title": result.title,
 			"subtitle": result.subtitle,
-			"url": url_for('main.post', post_id=result.id),
+			"url": url_for(POST_ROUTE, post_id=result.id),
 		} for result in search_results
 	]
 	return jsonify(results)
@@ -280,13 +281,13 @@ def unfollow(user_id):
 		user = User.query.filter_by(id=user_id).first()
 		if user is None:
 			flash('User {} not found.'.format(user_id))
-			return redirect(url_for('main.index'))
+			return redirect(url_for(INDEX_ROUTE))
 		if user == current_user:
 			flash('You cannot unfollow yourself!')
-			return redirect(url_for('main.dashboard', user_id=user_id))
+			return redirect(url_for(DASH_ROUTE, user_id=user_id))
 		current_user.unfollow(user)
 		db.session.commit()
 		flash('You are no longer following {}.'.format(user_id))
-		return redirect(url_for('main.dashboard', user_id=user_id))
+		return redirect(url_for(DASH_ROUTE, user_id=user_id))
 	else:
-		return redirect(url_for('main.index'))
+		return redirect(url_for(INDEX_ROUTE))
