@@ -1,8 +1,8 @@
 from flask_ckeditor import CKEditorField
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms import StringField, SubmitField, PasswordField, HiddenField, TextAreaField
-from wtforms.validators import DataRequired, URL, Email, EqualTo, Length
+from wtforms import StringField, SubmitField, HiddenField, TextAreaField
+from wtforms.validators import DataRequired, URL, Email, Length
 
 
 class CommentForm(FlaskForm):
@@ -48,7 +48,6 @@ class CreatePostForm(FlaskForm):
 		DataRequired(),
 	])
 	submit = SubmitField("Submit Post")
-
 
 
 class EmptyForm(FlaskForm):
