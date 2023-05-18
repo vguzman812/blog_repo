@@ -104,14 +104,14 @@ class User(UserMixin, db.Model):
 		primary_key=True,
 	)
 	email = db.Column(
-		db.String(100),
+		db.String(64),
 		unique=True,
 	)
 	password = db.Column(
 		db.String(),
 	)
 	username = db.Column(
-		db.String(50),
+		db.String(64),
 		unique=True,
 	)
 	created_on = db.Column(
