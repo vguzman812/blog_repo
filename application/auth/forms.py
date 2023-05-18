@@ -1,18 +1,27 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
 
 
 class EditProfileForm(FlaskForm):
-	new_username = StringField("Username", validators=[
+	new_username = StringField('Username', validators=[
+		DataRequired(),
+		Length(1, 64),
+		Regexp(
+			'^[A-Za-z][A-Za-z0-9_.]*$',
+			0,
+			'Usernames must have only letters, numbers, dots or underscores'),
 	])
 	new_email = StringField("Email", validators=[
-		Email(message="Not a valid email address.")
+		DataRequired(),
+		Email(message="Not a valid email address."),
+		Length(max=64, message='Email must not be longer than 64 characters.')
 	])
 	new_password = PasswordField("Password", validators=[
+		Length(min=6, message="Minimum length is 6 characters"),
 	])
 	confirm_password = PasswordField("Confirm Password", validators=[
-		EqualTo('new_password', message="Passwords must match.")
+		EqualTo('password', message="Passwords must match.")
 	])
 	about_me = TextAreaField('About me', validators=[
 		Length(min=0, max=280, message='About me may be 280 characters maximum.'),
@@ -32,14 +41,18 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-	username = StringField("Username", validators=[
+	username = StringField('Username', validators=[
 		DataRequired(),
-		Length(min=4, max=50, message='Username must be between 4 and 50 characters.')
+		Length(1, 64),
+		Regexp(
+			'^[A-Za-z][A-Za-z0-9_.]*$',
+			0,
+			'Usernames must have only letters, numbers, dots or underscores'),
 	])
 	email = StringField("Email", validators=[
 		DataRequired(),
 		Email(message="Not a valid email address."),
-		Length(max=100, message='Email must not be longer than 100 characters.')
+		Length(max=64, message='Email must not be longer than 64 characters.')
 	])
 	password = PasswordField("Password", validators=[
 		DataRequired(),

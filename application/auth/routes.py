@@ -126,7 +126,7 @@ def register():
 		if existing_user_by_email is None and existing_user_by_username is None:
 			user = User(
 				username=form.username.data,
-				email=form.email.data,
+				email=form.email.data.lower(),
 				created_on=datetime.now(),
 				last_seen=datetime.now(),
 				verified=False,
@@ -168,7 +168,7 @@ def reset_password_request():
 		return redirect(url_for(INDEX_ROUTE))
 	form = ResetPasswordRequestForm()
 	if form.validate_on_submit():
-		user = User.query.filter_by(email=form.email.data).first()
+		user = User.query.filter_by(email=form.email.data.lower()).first()
 		if user:
 			send_password_reset_email(user)
 		flash(

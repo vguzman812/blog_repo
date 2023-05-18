@@ -21,10 +21,6 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
-    # Flask-Session
-    REDIS_URI = environ.get("REDIS_URI")
-    SESSION_TYPE = "redis"
-    SESSION_REDIS = redis.from_url(REDIS_URI)
 
     # Flask-Mail
     MAIL_SERVER = environ.get('MAIL_SERVER')
