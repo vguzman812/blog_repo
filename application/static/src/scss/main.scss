@@ -1,0 +1,227 @@
+* {
+    box-sizing: border-box;
+//     outline: 1px solid red;
+}
+:root {
+	/* Define light theme variables */
+	--primary-color: #FCF8EC;
+	--primary-color-transparent: #FCF8EC7F;
+	--secondary-color: #D0E8F2;
+	--tertiary-color: #79A3B1;
+	--quaternary-color: #112D4E;
+
+	/* Define dark theme variables */
+	--dark-primary-color: #2C3333;
+	--dark-primary-color-transparent: #2C33337F;
+	--dark-secondary-color: #2E4F4F;
+	--dark-tertiary-color: #0E8388;
+	--dark-quaternary-color: #ECFCF6;
+}
+
+/* Define light theme styles */
+[data-theme="light"] {
+    background-color: var(--primary-color);
+    // Define general variables for flexible use
+    --bg-primary-color: var(--primary-color);
+	--bg-primary-color-transparent: var(--primary-color-transparent);
+	--bg-secondary-color: var(--secondary-color);
+	--bg-tertiary-color: var(--tertiary-color);
+	--bg-quaternary-color: var(--quaternary-color);
+
+	--text-primary-color: var(--primary-color);
+	--text-secondary-color: var(--secondary-color);
+	--text-tertiary-color: var(--tertiary-color);
+	--text-quaternary-color: var(--quaternary-color);
+
+	.text-primary-color {
+		color: var(--text-primary-color);
+	}
+
+	.text-secondary-color {
+		color: var(--text-secondary-color);
+	}
+
+	.text-tertiary-color {
+		color: var(--text-tertiary-color);
+	}
+
+	.text-quaternary-color {
+		color: var(--text-quaternary-color);
+	}
+
+	.text-with-border {
+		color: var(--text-quaternary-color);
+		text-shadow: -1px 0 var(--text-primary-color), 0 1px var(--text-primary-color), 1px 0 var(--text-primary-color), 0 -1px var(--text-primary-color);
+	}
+
+	.bg-primary-color {
+		background-color: var(--bg-primary-color);
+	}
+
+	.bg-secondary-color {
+		background-color: var(--bg-secondary-color);
+	}
+
+	.bg-tertiary-color {
+		background-color: var(--bg-tertiary-color);
+	}
+
+	.bg-quaternary-color {
+		background-color: var(--bg-quaternary-color);
+	}
+
+	.patterned {
+        background-color: var(--bg-primary-color);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23112D4E' fill-opacity='0.25' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        background-size: auto;
+    }
+
+}
+
+/* Define dark theme styles */
+[data-theme="dark"] {
+    background-color: var(--dark-primary-color);
+
+        // Define general variables for flexible use
+    --bg-primary-color: var(--dark-primary-color);
+	--bg-primary-color-transparent: var(--dark-primary-color-transparent);
+	--bg-secondary-color: var(--dark-secondary-color);
+	--bg-tertiary-color: var(--dark-tertiary-color);
+	--bg-quaternary-color: var(--dark-quaternary-color);
+
+	--text-primary-color: var(--dark-primary-color);
+	--text-secondary-color: var(--dark-secondary-color);
+	--text-tertiary-color: var(--dark-tertiary-color);
+	--text-quaternary-color: var(--dark-quaternary-color);
+
+	.text-primary-color {
+		color: var(--text-primary-color);
+	}
+
+	.text-secondary-color {
+		color: var(--text-secondary-color);
+	}
+
+	.text-tertiary-color {
+		color: var(--text-tertiary-color);
+	}
+
+	.text-quaternary-color {
+		color: var(--text-quaternary-color);
+	}
+
+	.text-with-border {
+		color: var(--text-quaternary-color);
+		text-shadow: -1px 0 var(--text-primary-color), 0 1px var(--text-primary-color), 1px 0 var(--text-primary-color), 0 -1px var(--text-primary-color);
+	}
+
+	.bg-primary-color {
+		background-color: var(--bg-primary-color);
+	}
+
+	.bg-secondary-color {
+		background-color: var(--bg-secondary-color);
+	}
+
+	.bg-tertiary-color {
+		background-color: var(--bg-tertiary-color);
+	}
+
+	.bg-quaternary-color {
+		background-color: var(--bg-quaternary-color);
+	}
+
+	.patterned {
+        background-color: var(--bg-primary-color);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23BBE1FA' fill-opacity='0.25' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+        background-size: auto;
+    }
+
+
+}
+
+/* HTML5 display-role reset for older browsers */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Beginning of actual stylesheet */
+
+
+body {
+    line-height: 1;
+	width: 100%;
+	margin-left: 0;
+	background-color: var(--bg-primary-color)
+}
+
+
+/* Nav */
+
+.sticky-top {
+	position: sticky;
+}
+
+/* patterns */
+
+a .disabled {
+    opacity: .1;
+}
+
+.search-results {
+    max-height: 30vh;
+}

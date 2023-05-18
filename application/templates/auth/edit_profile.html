@@ -1,0 +1,237 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+
+{{ super() }}
+{% assets "css_dashboard" %}
+<link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"/>
+{% endassets %}
+{% endblock %}
+
+{% block content %}
+{% from 'bootstrap5/form.html' import render_field, render_hidden_errors, render_form_row %}
+
+<body>
+<!--svgs-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="home" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
+    </symbol>
+    <symbol id="book" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+    </symbol>
+    <symbol id="thought" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/>
+    </symbol>
+    <symbol id="people" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+    </symbol>
+    <symbol id="heart" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+    </symbol>
+    <symbol id="logout" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+    </symbol>
+    <symbol id="close" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </symbol>
+    <symbol id="gear" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+    </symbol>
+
+
+</svg>
+
+<main class="">
+    <!--Dashboard specific navbar-->
+    <nav class="patterned navbar navbar-default navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand me-5 pe-5" href="/">
+                IdeaGenie
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#navbarOffcanvasMd"
+                    aria-controls="navbarOffcanvasMd" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end d-flex patterned" tabindex="-1" id="navbarOffcanvasMd"
+                 aria-labelledby="navbarOffcanvasLgLabel">
+                <div class="offcanvas-header text-quaternary-color" data-bs-theme="">
+                    <h5 class="offcanvas-title me-3" id="offcanvasNavbarLabel">{{ user.username}}</h5>
+                    <img src="{{ current_user.avatar(30) }}" alt="" class="me-auto rounded">
+                    <button type="button" class="btn btn-outline text-quaternary-color" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
+                        <svg class="bi me-2" width="24" height="24">
+                            <use href="#close"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.dashboard', user_id=current_user.id) }}"
+                               class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#home"/>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.dashboard', user_id=user.id) }}"
+                               class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#book"/>
+                                </svg>
+                                Posts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.dashboard_comments', user_id=user.id) }}"
+                               class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#thought"/>
+                                </svg>
+                                Comments
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.followers', user_id=user.id) }}" class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#people"/>
+                                </svg>
+                                Followers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.following', user_id=user.id) }}" class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#heart"/>
+                                </svg>
+                                Following
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('auth.logout') }}" class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#logout"/>
+                                </svg>
+                                Log Out
+                            </a>
+                        </li>
+                        {% if user == current_user %}
+                        <li class="nav-item">
+                            <a href="{{ url_for('main.index') }}" class="nav-link d-flex">
+                                <svg class="bi me-2" width="16" height="16">
+                                    <use href="#gear"/>
+                                </svg>
+                                Settings
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle theme-switch" href="#" role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Color Theme
+                            </a>
+                            <ul class="dropdown-menu patterned text-center">
+                                <li class="d-flex align-items-center justify-content-center">
+                                    <a class="dropdown-item light-theme-toggler" href="#">Light</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li class="d-flex align-items-center justify-content-center">
+                                    <a class="dropdown-item dark-theme-toggler" href="#">Dark</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--Edit profile form-->
+    <form method="POST" class="container text-center text-quaternary-color shadow rounded mt-3 bg-secondary-color">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {{ form.csrf_token }}
+        {{ render_hidden_errors(form) }}
+
+        <div class="row justify-content-md-center justify-content-between">
+            <div class="col-3 align-self-center">
+                Username: {{ user.username }}
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-6 my-3">
+                {{ render_field(form.new_username, placeholder='New username') }}
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center justify-content-between">
+            <div class="col-3 align-self-center">
+                Email: {{ user.email }}
+            </div>
+            <div class="col-1 "></div>
+            <div class="col-6 mb-3">
+                {{ render_field(form.new_email, placeholder="New email") }}
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center justify-content-between">
+            <div class="col-md-4 col-5 ">
+            </div>
+            <div class="col-6 mb-3">
+                {{ render_field(form.new_password, placeholder="New password") }}
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center justify-content-between">
+            <div class="col-md-4 col-5 ">
+            </div>
+            <div class="col-6 mb-3">
+                {{ render_field(form.confirm_password, placeholder="Confirm new password") }}
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center justify-content-between">
+            <div class="col-md-4 col-5 ">
+            </div>
+            <div class="col-6 mb-3">
+                {{ render_field(form.about_me, placeholder="About me. 280 character maximum") }}
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+            </div>
+            <div class="col-6 mb-3">{{ render_field(form.submit) }}</div>
+        </div>
+
+    </form>
+</main>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% assets "js_dashboard" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+{% endblock %}
