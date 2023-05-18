@@ -1,0 +1,62 @@
+<!-- Nav -->
+<nav class="patterned navbar navbar-default navbar-expand-xl sticky-top navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="{{url_for('main.index')}}"><strong>IdeaGenie</strong>
+            <span></span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('main.index')}}">Home</a>
+                </li>
+                {% if not current_user.is_authenticated: %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.login')}}">Login</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('auth.logout')}}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('main.dashboard', user_id=current_user.id)}}">Dashboard</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('main.create_post')}}">Create Post</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle theme-switch" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Color Theme
+                    </a>
+                    <ul class="dropdown-menu patterned text-center">
+                        <li class="d-flex align-items-center justify-content-center">
+                            <a class="dropdown-item light-theme-toggler" href="#">Light</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="d-flex align-items-center justify-content-center">
+                            <a class="dropdown-item dark-theme-toggler" href="#">Dark</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="dropdown">
+                <form class="d-flex" id="search-form">
+                    <input type="search" id="search-input" class="form-control me-2" placeholder="Search Posts"
+                           aria-label="Search">
+                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                </form>
+                <div class="search-results dropdown-menu p-3" aria-labelledby="search-input"></div>
+            </div>
+        </div>
+    </div>
+</nav>
