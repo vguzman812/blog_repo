@@ -278,7 +278,7 @@ def search(keyword):
 def unfollow(user_id):
 	form = EmptyForm()
 	if form.validate_on_submit():
-		user = User.query.filter_by(id=user_id).first()
+		user = User.query.filter_by(id=user_id).first_or_404()
 		if user is None:
 			flash('User {} not found.'.format(user_id))
 			return redirect(url_for(INDEX_ROUTE))
