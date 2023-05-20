@@ -29,6 +29,10 @@ class Config:
     MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
     MAIL_USE_SSL = environ.get('MAIL_USE_SSL')
 
+    # Stream
+    STREAM_API_KEY = environ.get('STREAM_API_KEY')
+    STREAM_SECRET = environ.get('STREAM_SECRET')
+
 
 class ProdConfig(Config):
     FLASK_ENV = 'production'
