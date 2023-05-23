@@ -38,11 +38,11 @@ def edit_user(user_id):
 	)
 	if form.validate_on_submit():
 		# Check if the new username and email are different from the current ones
-		if form.new_username.data != user.username and User.query.filter_by(username=form.new_username.data).first():
+		if form.validate_username(form.new_username.data):
 			flash('Username is already taken.')
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
-		if form.new_email.data != user.email and User.query.filter_by(email=form.new_email.data).first():
+		if form.validate_email(form.new_email.data):
 			flash('Email is already taken.')
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
