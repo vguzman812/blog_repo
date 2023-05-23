@@ -11,17 +11,18 @@
 <body class="text-center bg-primary-color">
 {% include 'nav.html' %}
 <div class="banner d-flex flex-column">
-     {% for message in get_flashed_messages() %}
-            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
     <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
          style="background-image: url({{ all_posts[6].img_url }});">
         <article class="container">
             <div class="article-content row text-with-border justify-content-center">
-                <a href="{{ url_for('main.post', post_id=all_posts[6].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[6].id) }}"
+                   class="text-decoration-none text-quaternary-color">
                     <h1 class="my-3">
                         {{all_posts[6].title}}
                     </h1>
@@ -45,7 +46,8 @@
         <article class="d-flex flex-column justify-content-center container-fluid"
                  style="background-image: url({{ all_posts[1].img_url }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}"
+                   class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
                         {{all_posts[1].title}}
                     </h1>
@@ -66,7 +68,8 @@
         <article class="d-flex flex-column justify-content-center container-fluid"
                  style="background-image: url({{ all_posts[2].img_url  }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}" class="text-decoration-none text-quaternary-color">
+                <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}"
+                   class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
                         {{all_posts[2].title}}
                     </h1>
@@ -90,7 +93,8 @@
 <div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
     <article class="container">
         <div class="article-content row text-with-border justify-content-center">
-            <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}" class="text-decoration-none text-quaternary-color">
+            <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}"
+               class="text-decoration-none text-quaternary-color">
                 <h1 class="p-3">
                     {{all_posts[4].title}}
                 </h1>
@@ -99,7 +103,7 @@
                 {{all_posts[4].subtitle}}
             </p>
         </div>
-        <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}" >
+        <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}">
             <div class="featured-article-image m-5"
                  style="background-image: url({{ all_posts[4].img_url}});">
             </div>
@@ -107,7 +111,8 @@
         <div class="row justify-content-center my-3">
             <ul class="list-unstyled">
                 <li>
-                    <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}" class="btn btn-secondary">Full Story</a>
+                    <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}" class="btn btn-secondary">Full
+                        Story</a>
                 </li>
             </ul>
         </div>
@@ -129,45 +134,19 @@
     </div>
     {% endfor %}
 </div>
+
 <div class="container my-3 p-3 d-flex justify-content-center">
-    <nav aria-label="post-navigation">
-        <ul class="pagination">
-            {% if pagination.has_prev %}
-            <li class="page-item">
-                <a class='page-link' href="{{ url_for('main.index', page=pagination.prev_num) }}#post-container">
-                    Previous
-                </a>
-            </li>
-            {% endif %}
-            {% for number in pagination.iter_pages() %}
-            {% if pagination.page != number %}
-            <li class="page-item">
-                <a class='page-link'
-                   href="{{ url_for('main.index', page=number) }}#post-container">
-                    {{ number }}
-                </a>
-            </li>
-            {% else %}
-            <li class='page-item active' aria-current="page">
-                <span class="page-link">{{ number }}</span>
-            </li>
-            {% endif %}
-            {% endfor %}
-            {% if pagination.has_next %}
-            <li class="page-item">
-                <a class='page-link'
-                   href="{{ url_for('main.index', page=pagination.next_num) }}#post-container">
-                    Next
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-</div>
-<div class="footer container d-flex justify-content-center py-3">
-    <footer>
-        Footer
-    </footer>
-</div>
+        {% if pagination.has_next %}
+    <p id="paging-area">
+        <a href="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
+           hx-trigger="revealed"
+           hx-get="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
+           hx-target="#paging-area"
+           hx-swap="outerHTML"
+        >Load more</a>
+    </p>
+    {% else %}
+    <p>That's all of them!</p>
+    {% endif %}
 
 {% endblock %}

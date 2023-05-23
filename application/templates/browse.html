@@ -1,0 +1,16 @@
+<div class="post-container text-quaternary-color mt-5 pt-5" id="post-container">
+    {% for post in pagination.items %}
+    <div class="post">
+        <a href="{{ url_for('main.post', post_id=post.id) }}">
+            <div class="post-image"
+                 style="background-image: url({{ post.img_url }});">
+            </div>
+        </a>
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text m-3">{{ post.subtitle }}</p>
+            <a href="{{ url_for('main.post', post_id=post.id) }}" class="btn btn-secondary mt-3">Full Story</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>

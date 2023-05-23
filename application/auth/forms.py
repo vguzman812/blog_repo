@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo, Length, Regexp
+from ..models import User
 
 
 class EditProfileForm(FlaskForm):
@@ -27,6 +29,15 @@ class EditProfileForm(FlaskForm):
 		Length(min=0, max=280, message='About me may be 280 characters maximum.'),
 	])
 	submit = SubmitField("Change all my stuff!")
+
+	def validate_email(self, field):
+		if field.data != self.user.email and User.query.filter_by(email=field.data).first():
+			raise ValidationError('Email already registered.')
+
+	def validate_username(self, field):
+		if field.data != self.user.username and User.query.filter_by(username=field.data).first():
+			raise ValidationError('Username already in use.')
+
 
 
 class LoginForm(FlaskForm):
@@ -63,6 +74,16 @@ class RegisterForm(FlaskForm):
 		EqualTo('password', message="Passwords must match.")
 	])
 	submit = SubmitField("Sign Me Up!")
+
+	def validate_email(self, field):
+		if field.data != self.user.email and \
+				User.query.filter_by(email=field.data).first():
+			raise ValidationError('Email already registered.')
+
+	def validate_username(self, field):
+		if field.data != self.user.username and \
+				User.query.filter_by(username=field.data).first():
+			raise ValidationError('Username already in use.')
 
 
 class ResetPasswordForm(FlaskForm):

@@ -47,8 +47,12 @@ def edit_user(user_id):
 			return redirect(url_for('auth.edit_user', user_id=user_id))
 
 		# Update the user's data if all validation checks pass
-		user.username = form.new_username.data
-		user.email = form.new_email.data
+		if form.new_username.data != user.username:
+			user.username = form.new_username.data
+		if form.new_email.data != user.email:
+			user.email = form.new_email.data.lower()
+			user.verified = False
+			send_verification_email(user)
 		if form.new_password.data:
 			user.set_password(form.new_password.data)
 		if form.about_me.data != user.about_me:
@@ -57,6 +61,7 @@ def edit_user(user_id):
 		db.session.commit()
 
 		flash('Profile successfully edited.')
+		flash('Please verify your new email address for posting privileges. Check your email for a verification link.')
 		return redirect(url_for(DASH_ROUTE, user_id=current_user.id))
 
 	return render_template('auth/edit_profile.html', form=form, user=current_user)

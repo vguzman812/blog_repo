@@ -221,6 +221,15 @@ def index():
 		all_posts=posts,
 	)
 
+@bp.route('/browse')
+def browse():
+	page = request.args.get('page', 1, type=int)
+	pagination = BlogPost.query.order_by(BlogPost.created_on.desc()).paginate(page=page, per_page=6)
+
+	return render_template(
+		"browse.html",
+		pagination=pagination,
+	)
 
 # Render specific post page
 @bp.route("/post/<int:post_id>", methods=["GET", "POST"])
