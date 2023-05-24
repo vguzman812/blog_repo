@@ -43,7 +43,7 @@ moment = Moment()
 whooshee = Whooshee()
 
 
-def init_app(config_class=config.DevConfig):
+def init_app(config_class=config.ProdConfig):
 	"""Initialize the core application."""
 	app = Flask(__name__, instance_relative_config=False)
 	app.config.from_object(config_class)
