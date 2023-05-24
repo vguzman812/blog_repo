@@ -56,6 +56,8 @@ webassets = "==2.0"
 werkzeug = "==2.2.3"
 wtforms = "==3.0.1"
 yarl = "==1.8.2"
+gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
