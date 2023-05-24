@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn blog_repo:app
+web: flask db upgrade; gunicorn wsgi:app
