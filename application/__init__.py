@@ -68,8 +68,9 @@ def init_app(config_class=config.ProdConfig):
 		app.register_blueprint(errors.bp)
 		app.register_blueprint(main.bp)
 
-		# Compile static assets
-		compile_static_assets(assets)
+		if app.config['FLASK_ENV'] == 'development':
+			# Compile static assets
+			compile_static_assets(assets)
 
 		# Create sql tables for our data models
 		db.create_all()
@@ -78,6 +79,7 @@ def init_app(config_class=config.ProdConfig):
 
 		#Initialize logger if in production
 		if not app.debug and not app.testing:
+
 			if app.config['LOG_TO_STDOUT']:
 				stream_handler = logging.StreamHandler()
 				stream_handler.setLevel(logging.INFO)
