@@ -9,10 +9,14 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_whooshee import Whooshee
+from logging.handlers import SMTPHandler, RotatingFileHandler
 from os import path
 from sqlalchemy import MetaData
 
 import config
+import logging
+import os
+
 
 basedir = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(basedir, '../.env'))
@@ -72,4 +76,22 @@ def init_app(config_class=config.DevConfig):
 
 		migrate.init_app(app, db, render_as_batch=True)
 
+		#Initialize logger if in production
+		if not app.debug and not app.testing:
+			if app.config['LOG_TO_STDOUT']:
+				stream_handler = logging.StreamHandler()
+				stream_handler.setLevel(logging.INFO)
+				app.logger.addHandler(stream_handler)
+			else:
+				if not path.exists('logs'):
+					os.mkdir('logs')
+				file_handler = RotatingFileHandler('logs/ideagenie.log', maxBytes=10240, backupCount=10)
+				file_handler.setFormatter(logging.Formatter(
+					'%(asctime)s %(levelname)s: %(message)s '
+					'[in %(pathname)s:%(lineno)d]'))
+				file_handler.setLevel(logging.INFO)
+				app.logger.addHandler(file_handler)
+
+			app.logger.setLevel(logging.INFO)
+			app.logger.info('IdeaGenie startup')
 		return app
