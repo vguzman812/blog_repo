@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn ideagenie:app
+web: flask db upgrade; gunicorn blog_repo:app
