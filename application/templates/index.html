@@ -162,18 +162,19 @@
         </div>
     </div>
     {% endfor %}
-    {% if pagination.has_next %}
-    <p id="paging-area">
-        <a href="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
-           hx-trigger="revealed"
-           hx-get="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
-           hx-target="#paging-area"
-           hx-swap="outerHTML"
-        >Load more</a>
-    </p>
-    {% else %}
-    <p>That's all of them!</p>
-    {% endif %}
 </div>
+
+{% if pagination.has_next %}
+<p id="paging-area">
+    <a href="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
+       hx-trigger="revealed"
+       hx-get="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
+       hx-target="#paging-area"
+       hx-swap="outerHTML"
+    >Load more</a>
+</p>
+{% else %}
+<p>That's all of them!</p>
+{% endif %}
 {% endif %}
 {% endblock %}
