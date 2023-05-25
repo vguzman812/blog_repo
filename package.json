@@ -1,0 +1,14 @@
+{
+  "name": "blog_repo",
+  "version": "1.0.0",
+  "description": "My Flask blog application",
+  "scripts": {
+    "start": "python wsgi.py"
+  },
+  "dependencies": {
+    "sass": "^1.32.13"
+  },
+  "engines": {
+    "node": "14.x"
+  }
+}
