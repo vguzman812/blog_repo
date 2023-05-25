@@ -10,6 +10,13 @@
 {% block content %}
 <body class="text-center bg-primary-color">
 {% include 'nav.html' %}
+{% if all_posts.count() == 0 %}
+<div>
+    <p>
+        Nothing to see yet.
+    </p>
+</div>
+{% else %}
 <div class="banner d-flex flex-column">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
@@ -17,93 +24,106 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
+    {% if main_article %}
     <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
-         style="background-image: url({{ all_posts[6].img_url }});">
+         style="background-image: url({{ main_post.img_url }});">
         <article class="container">
             <div class="article-content row text-with-border justify-content-center">
-                <a href="{{ url_for('main.post', post_id=all_posts[6].id) }}"
+                <a href="{{ url_for('main.post', post_id=main_post.id) }}"
                    class="text-decoration-none text-quaternary-color">
                     <h1 class="my-3">
-                        {{all_posts[6].title}}
+                        {{main_post.title}}
                     </h1>
                 </a>
                 <h2 class="col-6 my-3">
-                    {{all_posts[6].subtitle}}
+                    {{main_post.subtitle}}
                 </h2>
             </div>
             <div class="row justify-content-center my-3">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main.post', post_id=all_posts[6].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=main_post.id) }}" class="btn btn-outline-light">Full
                             Story</a>
-
                     </li>
                 </ul>
             </div>
         </article>
     </div>
+    {% else %}
+    <div>
+        <p>
+            No Main article yet.
+        </p>
+    </div>
+    {% if secondary_post_1 and secondary_post_2 %}
     <div class="secondary-article-container mb-5">
         <article class="d-flex flex-column justify-content-center container-fluid"
-                 style="background-image: url({{ all_posts[1].img_url }});">
+                 style="background-image: url({{ secondary_post_1.img_url }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}"
+                <a href="{{ url_for('main.post', post_id=secondary_post_1.id) }}"
                    class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
-                        {{all_posts[1].title}}
+                        {{secondary_post_1.title}}
                     </h1>
                 </a>
                 <h2 class="col-6 my-2 ">
-                    {{all_posts[1].subtitle}}
+                    {{secondary_post_1.subtitle}}
                 </h2>
             </div>
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main.post', post_id=all_posts[1].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=secondary_post_1.id) }}" class="btn btn-outline-light">Full
                             Story</a>
                     </li>
                 </ul>
             </div>
         </article>
         <article class="d-flex flex-column justify-content-center container-fluid"
-                 style="background-image: url({{ all_posts[2].img_url  }});">
+                 style="background-image: url({{ secondary_post_2.img_url  }});">
             <div class="article-content row justify-content-center text-with-border">
-                <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}"
+                <a href="{{ url_for('main.post', post_id=secondary_post_2.id) }}"
                    class="text-decoration-none text-quaternary-color">
                     <h1 class="my-2">
-                        {{all_posts[2].title}}
+                        {{secondary_post_2.title}}
                     </h1>
                 </a>
                 <h2 class="col-6 my-2 ">
-                    {{all_posts[2].subtitle}}
+                    {{secondary_post_2.subtitle}}
                 </h2>
             </div>
             <div class="row justify-content-center my-2">
                 <ul class="list-unstyled">
                     <li>
-                        <a href="{{ url_for('main.post', post_id=all_posts[2].id) }}" class="btn btn-outline-light">Full
+                        <a href="{{ url_for('main.post', post_id=secondary_post_2.id) }}" class="btn btn-outline-light">Full
                             Story</a>
                     </li>
                 </ul>
             </div>
         </article>
     </div>
+    {% else %}
+    <div>
+        <p>
+            No secondary posts yet.
+        </p>
+    </div>
 </div>
-
+{% if featured_post %}
 <div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
     <article class="container">
         <div class="article-content row text-with-border justify-content-center">
-            <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}"
+            <a href="{{ url_for('main.post', post_id=featured_post.id) }}"
                class="text-decoration-none text-quaternary-color">
                 <h1 class="p-3">
-                    {{all_posts[4].title}}
+                    {{featured_post.title}}
                 </h1>
             </a>
             <p class="col-6">
-                {{all_posts[4].subtitle}}
+                {{featured_post.subtitle}}
             </p>
         </div>
-        <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}">
+        <a href="{{ url_for('main.post', post_id=featured_post.id) }}">
             <div class="featured-article-image m-5"
                  style="background-image: url({{ all_posts[4].img_url}});">
             </div>
@@ -111,12 +131,18 @@
         <div class="row justify-content-center my-3">
             <ul class="list-unstyled">
                 <li>
-                    <a href="{{ url_for('main.post', post_id=all_posts[4].id) }}" class="btn btn-secondary">Full
+                    <a href="{{ url_for('main.post', post_id=featured_post.id) }}" class="btn btn-secondary">Full
                         Story</a>
                 </li>
             </ul>
         </div>
     </article>
+</div>
+{% else %}
+<div>
+    <p>
+        No featured post yet.
+    </p>
 </div>
 <div class="post-container text-quaternary-color mt-5 pt-5" id="post-container">
     {% for post in pagination.items %}
@@ -133,10 +159,7 @@
         </div>
     </div>
     {% endfor %}
-</div>
-
-<div class="container my-3 p-3 d-flex justify-content-center">
-        {% if pagination.has_next %}
+    {% if pagination.has_next %}
     <p id="paging-area">
         <a href="{{ url_for('main.browse', page=pagination.next_num) }}#post-container"
            hx-trigger="revealed"
@@ -148,5 +171,6 @@
     {% else %}
     <p>That's all of them!</p>
     {% endif %}
-
+</div>
+{% endif %}
 {% endblock %}

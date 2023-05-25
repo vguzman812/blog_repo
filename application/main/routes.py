@@ -211,6 +211,10 @@ def following(user_id):
 def index():
 	reindex_search()
 	posts = BlogPost.query.all()
+	main_post = None
+	secondary_post_1 = None
+	secondary_post_2 = None
+	featured_post = None
 	page = request.args.get('page', 1, type=int)
 	pagination = BlogPost.query.order_by(BlogPost.created_on.desc()).paginate(page=page, per_page=6)
 
@@ -219,6 +223,10 @@ def index():
 		current_user=current_user,
 		pagination=pagination,
 		all_posts=posts,
+		main_post=main_post,
+		secondary_post_1=secondary_post_1,
+		secondary_post_2=secondary_post_2,
+		featured_post=featured_post,
 	)
 
 @bp.route('/browse')
