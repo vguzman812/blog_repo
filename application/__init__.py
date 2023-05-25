@@ -68,7 +68,7 @@ def init_app(config_class=config.ProdConfig):
 		app.register_blueprint(errors.bp)
 		app.register_blueprint(main.bp)
 
-		if app.config['FLASK_ENV'] == 'development':
+		if app.config['FLASK_ENV'] == 'production':
 			# Compile static assets
 			compile_static_assets(assets)
 

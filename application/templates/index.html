@@ -10,7 +10,7 @@
 {% block content %}
 <body class="text-center bg-primary-color">
 {% include 'nav.html' %}
-{% if all_posts.count() == 0 %}
+{% if all_posts|length == 0 %}
 <div>
     <p>
         Nothing to see yet.
@@ -55,6 +55,7 @@
             No Main article yet.
         </p>
     </div>
+    {% endif %}
     {% if secondary_post_1 and secondary_post_2 %}
     <div class="secondary-article-container mb-5">
         <article class="d-flex flex-column justify-content-center container-fluid"
@@ -108,6 +109,7 @@
             No secondary posts yet.
         </p>
     </div>
+    {% endif %}
 </div>
 {% if featured_post %}
 <div class="featured-article-container container mp-6 d-flex flex-column justify-content-start">
@@ -144,6 +146,7 @@
         No featured post yet.
     </p>
 </div>
+{% endif %}
 <div class="post-container text-quaternary-color mt-5 pt-5" id="post-container">
     {% for post in pagination.items %}
     <div class="post">
