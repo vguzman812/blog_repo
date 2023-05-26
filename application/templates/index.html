@@ -57,7 +57,7 @@
     </div>
     {% endif %}
     {% if secondary_post_1 and secondary_post_2 %}
-    <div class="secondary-article-container mb-5">
+    <div class="secondary-article-container ">
         <article class="d-flex flex-column justify-content-center container-fluid"
                  style="background-image: url({{ secondary_post_1.img_url }});">
             <div class="article-content row justify-content-center text-with-border">
@@ -126,7 +126,7 @@
             </p>
         </div>
         <a href="{{ url_for('main.post', post_id=featured_post.id) }}">
-            <div class="featured-article-image m-md-5"
+            <div class="featured-article-image my-5 m-md-5"
                  style="background-image: url({{ featured_post.img_url}});">
             </div>
         </a>

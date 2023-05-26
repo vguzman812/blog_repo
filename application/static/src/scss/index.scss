@@ -77,6 +77,7 @@ h5 {
     .secondary-article-container {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(autofit, 1fr);
+        height: 120vh;
     }
 
 }
