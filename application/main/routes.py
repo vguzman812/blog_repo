@@ -211,10 +211,10 @@ def following(user_id):
 def index():
 	reindex_search()
 	posts = BlogPost.query.all()
-	main_post = None
-	secondary_post_1 = None
-	secondary_post_2 = None
-	featured_post = None
+	main_post = posts[0]
+	secondary_post_1 = posts[1]
+	secondary_post_2 = posts[4]
+	featured_post = posts[2]
 	page = request.args.get('page', 1, type=int)
 	pagination = BlogPost.query.order_by(BlogPost.created_on.desc()).paginate(page=page, per_page=6)
 
