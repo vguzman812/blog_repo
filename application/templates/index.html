@@ -35,7 +35,7 @@
                         {{main_post.title}}
                     </h1>
                 </a>
-                <h2 class="col-6 my-3">
+                <h2 class="my-3">
                     {{main_post.subtitle}}
                 </h2>
             </div>
@@ -67,7 +67,7 @@
                         {{secondary_post_1.title}}
                     </h1>
                 </a>
-                <h2 class="col-6 my-2 ">
+                <h2 class=" my-2 ">
                     {{secondary_post_1.subtitle}}
                 </h2>
             </div>
@@ -89,7 +89,7 @@
                         {{secondary_post_2.title}}
                     </h1>
                 </a>
-                <h2 class="col-6 my-2 ">
+                <h2 class=" my-2 ">
                     {{secondary_post_2.subtitle}}
                 </h2>
             </div>
@@ -121,12 +121,12 @@
                     {{featured_post.title}}
                 </h1>
             </a>
-            <p class="col-6">
+            <p class="col-6-md">
                 {{featured_post.subtitle}}
             </p>
         </div>
         <a href="{{ url_for('main.post', post_id=featured_post.id) }}">
-            <div class="featured-article-image m-5"
+            <div class="featured-article-image m-md-5"
                  style="background-image: url({{ featured_post.img_url}});">
             </div>
         </a>
