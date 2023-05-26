@@ -24,7 +24,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
-    {% if main_article %}
+    {% if main_post %}
     <div class="main-article-container container-fluid d-flex flex-column justify-content-center"
          style="background-image: url({{ main_post.img_url }});">
         <article class="container">
@@ -127,7 +127,7 @@
         </div>
         <a href="{{ url_for('main.post', post_id=featured_post.id) }}">
             <div class="featured-article-image m-5"
-                 style="background-image: url({{ all_posts[4].img_url}});">
+                 style="background-image: url({{ featured_post.img_url}});">
             </div>
         </a>
         <div class="row justify-content-center my-3">
