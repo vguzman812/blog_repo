@@ -6,7 +6,7 @@ This is a Flask-based blog application that allows users to create, read, update
 
 1. Clone the repository:
     ``` commandline   
-    git clone <repository_url>
+    git clone git@github.com:vguzman812/blog_repo.git
     ```
 2. Navigate to the project directory:
     ```   commandline
@@ -29,7 +29,17 @@ This is a Flask-based blog application that allows users to create, read, update
 
 6. Set up the environment variables:
    - Create a `.env` file in the project root directory.
-   - Define the required environment variables in the `.env` file.
+     ```commandline
+      touch .env
+      open .env
+     ```
+   - Define the required environment variables in the `.env` file. 
+     - SECRET_KEY=<your_secret_key>
+     - DATABASE_URL=<your_database_url>
+     - MAIL_SERVER=<your_mail_server>
+     - MAIL_PORT=<your_mail_port>
+     - MAIL_USERNAME=<your_mail_username>
+     - MAIL_PASSWORD=<your_mail_password>
 
 7. Initialize the database:
    ```commandline
@@ -38,19 +48,16 @@ This is a Flask-based blog application that allows users to create, read, update
 
 8. Apply database migrations:
    ```commandline
-   flask db migrate
+   flask db migrate -m "initial migration"
    flask db upgrade
    ```
-
-9. Compile the static assets:
-   ```commandline
-   flask compile-assets
-   ```
-
-10. Run the application:
+9. Run the application:
     ```commandline
-    gunicorn wsgi:app
+    flask run
     ```
+The application should now be running locally on http://localhost:5000.
+
+
 
 ## Usage:
 - Register a new account with your email and password.
