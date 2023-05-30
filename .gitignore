@@ -76,6 +76,7 @@ db.sqlite3-journal
 .logs/
 .migrations/
 .whooshee/
+blog_repo/logs/
 
 # Scrapy stuff:
 .scrapy
