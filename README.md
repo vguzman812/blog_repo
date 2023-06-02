@@ -1,7 +1,7 @@
 # IdeaGenie
 
 This is a Flask-based blog application that allows users to create, read, update, and delete blog posts. Users can register an account, log in, and perform various actions related to managing their blog posts. The application also includes features like commenting, user profiles, and basic search functionality.
-
+#### Video Demo:  https://www.youtube.com/watch?v=m-PJogGYK2s&ab_channel=VincentGuzman
 ## Installation:
 
 1. Clone the repository:
